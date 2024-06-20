@@ -160,7 +160,7 @@ function AddressListPage({ isLoggedin, memberId }) {
                 />
               </th>
 
-              <th scope="col">주소록 고정</th>
+              <th scope="col">기본 배송지</th>
               <th scope="col">배송지명</th>
               <th scope="col">수령인</th>
               <th scope="col">휴대전화</th>
@@ -184,7 +184,11 @@ function AddressListPage({ isLoggedin, memberId }) {
                   <td>
                     <button
                       onClick={() => handleSetDefaultAddress(address.addressId)}
-                      style={{ border: "none", background: "none" }}
+                      style={{
+                        border: "none",
+                        background: "none",
+                        cursor: "pointer",
+                      }}
                     >
                       <img
                         src="//img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_address_fix.gif"

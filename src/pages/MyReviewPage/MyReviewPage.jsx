@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 // 외부 라이브러리 및 모듈
 import axios from "axios";
@@ -23,7 +24,7 @@ function MyReviewPage({ isLoggedin, memberId }) {
   const [selectedRId, setSelectedRId] = useState(null);
   const [thumbnailImages, setThumbnailImages] = useState([]);
 
-  const [isImagesChecked, setIsImagesChecked] = useState(false); // 이미지 상태 확인 여부 추가
+  const [isImagesChecked, setIsImagesChecked] = useState(false);
   const defaultImageURL =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTRx9zMfm7p_YRHoXXLVhaI2YpE4bMGgwnyg&s";
 
@@ -43,7 +44,6 @@ function MyReviewPage({ isLoggedin, memberId }) {
             withCredentials: true,
           }
         );
-        console.log(response.data);
         setProductReviewData(response.data);
       } catch (error) {
         console.error(error.response.data);
@@ -112,45 +112,6 @@ function MyReviewPage({ isLoggedin, memberId }) {
   const closeRUModal = () => {
     setRUModalOpen(false);
   };
-  /*
-  const handleReviewDelete = async (reviewId) => {
-    try {
-      // 로컬 스토리지에서 Authorization 토큰 가져오기
-      const authorization = localStorage.getItem("Authorization");
-      // Authorization 헤더를 포함한 axios 요청
-      await axios.delete(
-        `${process.env.REACT_APP_BACKEND_BASE_URL}/review/${reviewId}/${memberId}`,
-        {
-          headers: {
-            Authorization: authorization,
-          },
-          withCredentials: true,
-        }
-      );
-      // 리뷰 삭제 후 상태 업데이트
-      setProductReviewData((prevData) =>
-        prevData.filter((review) => review.reviewId !== reviewId)
-      );
-    } catch (error) {
-      console.error(error.response.data);
-    }
-  };
-*/
-  const renderStars = (rating) => {
-    const filledStars = Math.floor(rating);
-    const remainingStars = 5 - filledStars;
-
-    return (
-      <>
-        {[...Array(filledStars)].map((_, index) => (
-          <FaStar key={index} />
-        ))}
-        {[...Array(remainingStars)].map((_, index) => (
-          <FaRegStar key={filledStars + index} />
-        ))}
-      </>
-    );
-  };
 
   const handleReviewDelete = async (reviewId) => {
     swal({
@@ -188,6 +149,22 @@ function MyReviewPage({ isLoggedin, memberId }) {
         swal.close(); // '아니오' 버튼을 누르면 창을 닫습니다.
       }
     });
+  };
+
+  const renderStars = (rating) => {
+    const filledStars = Math.floor(rating);
+    const remainingStars = 5 - filledStars;
+
+    return (
+      <>
+        {[...Array(filledStars)].map((_, index) => (
+          <FaStar key={index} />
+        ))}
+        {[...Array(remainingStars)].map((_, index) => (
+          <FaRegStar key={filledStars + index} />
+        ))}
+      </>
+    );
   };
 
   return (
@@ -236,10 +213,13 @@ function MyReviewPage({ isLoggedin, memberId }) {
             <div key={tableRow.reviewId} className="review-container">
               <div className="review-product">
                 {thumbnailImages[index] ? (
-                  <img
-                    src={`${process.env.REACT_APP_BACKEND_URL_FOR_IMG}${thumbnailImages[index]}`}
-                    alt={`상품명: ${tableRow.productName}`}
-                  />
+                  <Link to={`/product/${tableRow.productId}`}>
+                    <img
+                      src={`${process.env.REACT_APP_BACKEND_URL_FOR_IMG}${thumbnailImages[index]}`}
+                      alt={`상품명: ${tableRow.productName}`}
+                      className="review-product-img"
+                    />
+                  </Link>
                 ) : (
                   <div>이미지 로딩 중...</div>
                 )}
@@ -258,19 +238,29 @@ function MyReviewPage({ isLoggedin, memberId }) {
                     {tableRow.reviewContent}
                   </div>
                 </div>
-                <div className="review-images">
-                  {tableRow.reviewImgPaths
-                    .slice(0, 5)
-                    .map((imgPath, imgIndex) => (
-                      <img
-                        key={imgIndex}
-                        src={imgPath}
-                        alt={`상품명 ${
-                          tableRow.productName
-                        }의 ${index}번 리뷰 이미지 ${imgIndex + 1}`}
-                        className="review-image"
-                      />
-                    ))}
+                <div className="review-images-wrapper">
+                  <div className="review-images">
+                    {tableRow.reviewImgPaths
+                      .slice(0, 5)
+                      .map((imgPath, imgIndex) => (
+                        <div key={imgIndex} className="review-image-container">
+                          <img
+                            src={imgPath}
+                            alt={`상품명 ${
+                              tableRow.productName
+                            }의 ${index}번 리뷰 이미지 ${imgIndex + 1}`}
+                            className="review-image"
+                          />
+                          {/* <img
+                            src={imgPath}
+                            alt={`상품명 ${
+                              tableRow.productName
+                            }의 ${index}번 리뷰 이미지 ${imgIndex + 1}`}
+                            className="preview-image"
+                          /> */}
+                        </div>
+                      ))}
+                  </div>
                 </div>
               </div>
               <div className="review-edit-del-container">
