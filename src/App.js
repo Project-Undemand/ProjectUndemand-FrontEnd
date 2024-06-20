@@ -60,15 +60,18 @@ function App() {
   // 리덕스 상태에서 프로필 이미지 가져오기
   const profileImage = useSelector((state) => state.profile.profileImage);
   const [profileImageUrl, setProfileImageUrl] = useState("");
+  const default_profile_ImageUrl =
+    "https://defaultst.imweb.me/common/img/default_profile.png";
 
   /**
    *  소셜로그인 성공시, 메인도메인 주소에 redirectedFromSocialLogin 라는 파라미터가 추가되어지며
    * 그 즉시, useEffect 훅이 실행되어 집니다.
    * 1. 서버로부터 받은, HttpOnly Cookie 를 통해, 엑세스토큰을 클라이언트에 발급받습니다.
-   * 2. 로그인 상태, 회원Id, 회원Role 의 상태를 설정하고, 각 페이지에 보내줍니다.
+   * 2. 로그인 상태, 회원Id, 회원Role 를 로컬스토리지에 저장하고, 로그인 여부를 파악합니다.
    * */
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
+
     if (urlParams.has("redirectedFromSocialLogin")) {
       socialLoginAccessToken(navigate).then(() => {
         setIsLoggedin(true);
@@ -82,7 +85,7 @@ function App() {
    * 1. profile 데이터로부터 profileImage 를 리덕스 상태로부터 받아 존재할시
    * 2. 서버로부터 profileImageUrl 을 fetch 받아옵니다.
    * 3. Http OK 의 정상적인 응답을 받으면, 프로필 이미지 등록 성공.
-   * 4. 아닐 시,
+   * 4. Http Page Not Found 의 응답 시, 디폴트 프로필 이미지를 설정.
    */
   useEffect(() => {
     const setImageUrl = async () => {
@@ -97,21 +100,15 @@ function App() {
             setProfileImageUrl(imageUrl);
           } else {
             console.log("프로필 이미지 파일이 서버에 존재하지 않습니다.");
-            setProfileImageUrl(
-              "https://defaultst.imweb.me/common/img/default_profile.png"
-            );
+            setProfileImageUrl(default_profile_ImageUrl);
           }
         } catch (error) {
           console.error("Failed to fetch Profile image:", error);
-          setProfileImageUrl(
-            "https://defaultst.imweb.me/common/img/default_profile.png"
-          );
+          setProfileImageUrl(default_profile_ImageUrl);
         }
       } else {
         console.log("최초 프로필 이미지가 설정되지 않았습니다.");
-        setProfileImageUrl(
-          "https://defaultst.imweb.me/common/img/default_profile.png"
-        );
+        setProfileImageUrl(default_profile_ImageUrl);
       }
     };
 
@@ -130,7 +127,7 @@ function App() {
     ChannelTalk.setAppearance("system");
   };
 
-  // 로그인 했을 때, 프로필 데이터와 이미지 다시 가져오기
+  // 소셜 로그인 했을 때, 프로필 데이터와 이미지 다시 가져오기
   useEffect(() => {
     const fetchData = async () => {
       if (memberId) {

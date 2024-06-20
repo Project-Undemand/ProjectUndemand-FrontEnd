@@ -206,7 +206,6 @@ function PaymentDetailPage({
                 })}
               </div>
             </div>
-
             <div className="order-detail payhis-container">
               <h2>{orderDetail.ordererName}</h2>
               <hr style={{ border: "0.5px solid #fafafa", margin: "10px 0" }} />
