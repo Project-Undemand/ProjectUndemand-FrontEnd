@@ -59,7 +59,7 @@
     position: absolute;
     top: 50%;
     left: 7%;
-    transform: translateY(-50%);
+    transform: translateY(-90%);
     /* color: rgb(255, 255, 255); */
     color: rgb(34, 34, 34);
 }
@@ -70,7 +70,7 @@
     position: absolute;
     top: 50%;
     right: 7%;
-    transform: translateY(-50%);
+    transform: translateY(-90%);
     /* color: rgb(255, 255, 255); */
     color: rgb(34, 34, 34);
 }
@@ -79,6 +79,39 @@
     width: 340px;
     height: 480px;
     cursor: pointer;
+}
+
+@-webkit-keyframes skeleton-gradient {
+    0% {
+        background-color: rgba(165, 165, 165, 0.15);
+    }
+
+    50% {
+        background-color: rgba(165, 165, 165, 0.3);
+    }
+
+    100% {
+        background-color: rgba(165, 165, 165, 0.15);
+    }
+}
+
+@keyframes skeleton-gradient {
+    0% {
+        background-color: rgba(165, 165, 165, 0.15);
+    }
+
+    50% {
+        background-color: rgba(165, 165, 165, 0.3);
+    }
+
+    100% {
+        background-color: rgba(165, 165, 165, 0.15);
+    }
+}
+
+.swiper-slide-skeleton {
+    -webkit-animation: skeleton-gradient 1.8s infinite ease-in-out;
+    animation: skeleton-gradient 1.8s infinite ease-in-out;
 }
 
 .product-slide-card-container {

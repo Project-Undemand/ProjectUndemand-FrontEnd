@@ -34,13 +34,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "json-server-auth --watch db.json --port 8000",
-    "dev": "concurrently \"npm start\" \"npm run server\""
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "dev": "concurrently \"npm start\" \"npm run server\"",
+    "serve": "serve -s build"
   },
   "browserslist": {
     "production": [
@@ -54,5 +49,8 @@
       "last 1 safari version"
     ]
   },
-  "packageManager": "yarn@4.1.1"
+  "packageManager": "yarn@4.1.1",
+  "devDependencies": {
+    "serve": "^14.2.3"
+  }
 }

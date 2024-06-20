@@ -11,6 +11,7 @@ import { EffectCoverflow, Navigation } from "swiper/modules";
 
 const Carousel = () => {
   const [loading, setLoading] = useState(true);
+  const skeletonSlides = Array.from({ length: 5 });
   const [carouselProducts, setCarouselProducts] = useState([]);
   const memoizedRankingData = useMemo(
     () => carouselProducts,
@@ -51,7 +52,30 @@ const Carousel = () => {
   return (
     <>
       {loading ? (
-        <div>Loading...</div>
+        <Swiper
+          effect={"coverflow"}
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={"auto"}
+          initialSlide={2}
+          coverflowEffect={{
+            rotate: 10,
+            stretch: 0,
+            depth: 100,
+            modifier: 2,
+            slideShadows: true,
+          }}
+          navigation={true}
+          modules={[EffectCoverflow, Navigation]}
+          className="carousel-img-wrap"
+        >
+          {skeletonSlides.map((_, index) => (
+            <SwiperSlide
+              key={index}
+              className={`skeleton-carousel-img-card`}
+            ></SwiperSlide>
+          ))}
+        </Swiper>
       ) : (
         <Swiper
           effect={"coverflow"}
