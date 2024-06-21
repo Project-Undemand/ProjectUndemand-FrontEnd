@@ -42,8 +42,6 @@ function MyPaymentHistoryPage({
       // 그룹화된 데이터로 상태 설정
       const groupedData = groupByOrderId(response.data);
       setOrderGroup(groupedData);
-      console.log(response.data);
-      console.log(groupedData);
 
       // 각 상품에 대해 데이터 조회
       const fetchProductData = async () => {

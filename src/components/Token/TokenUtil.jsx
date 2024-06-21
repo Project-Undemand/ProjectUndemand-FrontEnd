@@ -74,7 +74,6 @@ export const socialLoginAccessToken = async (navigate) => {
     const payloadObject = decodeJWT(newAccessToken);
 
     if (payloadObject) {
-      console.log("memberId : ", payloadObject.memberId);
       localStorage.setItem("memberId", payloadObject.memberId);
       localStorage.setItem("memberRole", payloadObject.role);
     }

@@ -15,6 +15,7 @@ import {
 import PrivateRoutes from "../src/components/Routes/PrivateRoutes.jsx";
 import AdminRoutes from "./components/Routes/AdminRoutes.jsx";
 import Footer from "./components/Footer/Footer.jsx";
+// 페이지 컴포넌트
 import { Main } from "./pages/Main/Main.jsx";
 import { Signup } from "./pages/AuthPages/Signup.jsx";
 import { Login } from "./pages/AuthPages/Login.jsx";
@@ -29,10 +30,9 @@ import { ReceiptPage } from "./pages/ReceiptPage/ReceiptPage.jsx";
 import { AdministratorPage } from "./pages/AdministratorPage/AdministratorPage.jsx";
 import { MyPage } from "./pages/MyPage/MyPage.jsx";
 import { MyReviewPage } from "./pages/MyReviewPage/MyReviewPage.jsx";
-
 // 기타
-import "./App.css";
 import axios from "axios";
+import "./App.css";
 import "react-image-crop/dist/ReactCrop.css";
 
 function App() {
