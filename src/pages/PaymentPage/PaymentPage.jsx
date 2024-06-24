@@ -1,19 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import AddressRegistration from "../../components/AddressComponents/AddressRegistration.jsx";
+import AddressList from "../../components/AddressComponents/AddressList.jsx";
 import axios from "axios";
+import swal from "sweetalert";
 import "./PaymentPage.css";
 
 function PaymentPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { memberId } = location.state;
-  // const orderMemberId = memberId;
-  const [familyName, setFamilyName] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [fullName, setFullName] = useState("");
+  const [addressData, setAddressData] = useState({
+    addressId: "",
+    addressName: "",
+    recipient: "",
+    postCode: "",
+    address: "",
+    detailAddress: "",
+    phoneNumberPrefix: "010",
+    phoneNumberPart1: "",
+    phoneNumberPart2: "",
+    recipientPhone: "",
+    saveAddress: false,
+  });
+  const [fetchBasicOnCheckbox, setFetchBasicOnCheckbox] = useState(false);
+  const [defaultAddress, setDefaultAddress] = useState([]);
+  const [addressModalOpen, setAddressModalOpen] = useState(false);
+  const [selectedAddressData, setSelectedAddressData] = useState([]);
+  const [ordererName, setOrdererName] = useState("");
   const [address, setAddress] = useState("");
   const [detailAddress, setDetailAddress] = useState("");
-  const [phoneNum, setPhoneNum] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [postCode, setPostCode] = useState("");
   const [payMethod, setPayMethod] = useState("");
   const [notAllow, setNotAllow] = useState(true);
@@ -23,28 +40,27 @@ function PaymentPage() {
   const axiosInstance = axios.create({ withCredentials: true });
 
   useEffect(() => {
-    if (
-      familyName &&
-      firstName &&
-      address &&
-      detailAddress &&
-      phoneNum &&
-      postCode
-    ) {
+    if (addressModalOpen) {
+      document.body.classList.add("no-scroll");
+      document
+        .querySelector(".payment-page-wrapper")
+        .classList.add("no-pointer-events");
+    } else {
+      document.body.classList.remove("no-scroll");
+      document
+        .querySelector(".payment-page-wrapper")
+        .classList.remove("no-pointer-events");
+    }
+  }, [addressModalOpen]);
+
+  useEffect(() => {
+    if (ordererName && address && detailAddress && phoneNumber && postCode) {
       setNotAllow(false);
     } else {
       setNotAllow(true);
       setShowPayOption(false);
     }
-  }, [familyName, firstName, address, detailAddress, phoneNum, postCode]);
-
-  useEffect(() => {
-    let nameSum;
-    if (familyName && firstName) {
-      nameSum = familyName + firstName;
-    }
-    setFullName(nameSum);
-  }, [familyName, firstName]);
+  }, [ordererName, address, detailAddress, phoneNumber, postCode]);
 
   useEffect(() => {
     const handleFetchProduct = async () => {
@@ -85,8 +101,8 @@ function PaymentPage() {
           postCode: postCode,
           address: address,
           detailAddress: detailAddress,
-          ordererName: fullName,
-          phoneNumber: phoneNum,
+          ordererName: ordererName,
+          phoneNumber: phoneNumber,
           payMethod: payMethod,
         },
         {
@@ -160,68 +176,156 @@ function PaymentPage() {
   }
 
   const handleShowPayOption = () => {
-    setShowPayOption(true);
-    console.log("handleShowPayOption Click");
+    if (addressData.saveAddress) {
+      handleNewAddressSubmit().then(() => {
+        proceedToPayment();
+      });
+    } else {
+      proceedToPayment();
+    }
   };
 
+  const handleNewAddressSubmit = async () => {
+    const { saveAddress, ...addressDataToSubmit } = addressData;
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/address/${memberId}`,
+        addressDataToSubmit,
+        {
+          headers: {
+            Authorization: localStorage.getItem("Authorization"),
+          },
+          withCredentials: true,
+        }
+      );
+      console.log("Address created:", response.data);
+    } catch (error) {
+      console.error("Error creating address:", error);
+    }
+  };
+
+  const proceedToPayment = () => {
+    if (notAllow) {
+      swal({
+        title: "모든 입력란을 작성해 주세요!",
+        icon: "info",
+        buttons: "확인",
+      });
+    } else {
+      setShowPayOption(true);
+    }
+  };
+
+  useEffect(() => {
+    setOrdererName(`${addressData.recipient}`);
+    setAddress(`${addressData.address}`);
+    setDetailAddress(`${addressData.detailAddress}`);
+    setPhoneNumber(
+      `${addressData.phoneNumberPrefix}-${addressData.phoneNumberPart1}-${addressData.phoneNumberPart2}`
+    );
+    setPostCode(`${addressData.postCode}`);
+  }, [addressData]);
+
+  useEffect(() => {
+    if (fetchBasicOnCheckbox && defaultAddress && defaultAddress.length > 0) {
+      setAddressData({
+        addressId: defaultAddress[0].addressId || "",
+        addressName: defaultAddress[0].addressName || "",
+        recipient: defaultAddress[0].recipient || "",
+        postCode: defaultAddress[0].postCode || "",
+        address: defaultAddress[0].address || "",
+        detailAddress: defaultAddress[0].detailAddress || "",
+        phoneNumberPrefix: defaultAddress[0].recipientPhone
+          ? defaultAddress[0].recipientPhone.split("-")[0]
+          : "010",
+        phoneNumberPart1: defaultAddress[0].recipientPhone
+          ? defaultAddress[0].recipientPhone.split("-")[1]
+          : "",
+        phoneNumberPart2: defaultAddress[0].recipientPhone
+          ? defaultAddress[0].recipientPhone.split("-")[2]
+          : "",
+        recipientPhone: defaultAddress[0].recipientPhone || "",
+      });
+    } else {
+      setAddressData({
+        addressId: "",
+        addressName: "",
+        recipient: "",
+        postCode: "",
+        address: "",
+        detailAddress: "",
+        phoneNumberPrefix: "010",
+        phoneNumberPart1: "",
+        phoneNumberPart2: "",
+        recipientPhone: "",
+      });
+    }
+  }, [fetchBasicOnCheckbox, defaultAddress]);
+
+  useEffect(() => {
+    if (selectedAddressData) {
+      setAddressData({
+        addressId: selectedAddressData.addressId || "",
+        addressName: selectedAddressData.addressName || "",
+        recipient: selectedAddressData.recipient || "",
+        postCode: selectedAddressData.postCode || "",
+        address: selectedAddressData.address || "",
+        detailAddress: selectedAddressData.detailAddress || "",
+        phoneNumberPrefix: selectedAddressData.recipientPhone
+          ? selectedAddressData.recipientPhone.split("-")[0]
+          : "010",
+        phoneNumberPart1: selectedAddressData.recipientPhone
+          ? selectedAddressData.recipientPhone.split("-")[1]
+          : "",
+        phoneNumberPart2: selectedAddressData.recipientPhone
+          ? selectedAddressData.recipientPhone.split("-")[2]
+          : "",
+        recipientPhone: selectedAddressData.recipientPhone || "",
+      });
+    } else {
+      setAddressData({
+        addressId: "",
+        addressName: "",
+        recipient: "",
+        postCode: "",
+        address: "",
+        detailAddress: "",
+        phoneNumberPrefix: "010",
+        phoneNumberPart1: "",
+        phoneNumberPart2: "",
+        recipientPhone: "",
+      });
+    }
+  }, [selectedAddressData]);
+
   return (
-    <div className="payment-page">
-      <header className="payment-page-title">결제하기</header>
-      <div className="payment-page-wrapper">
+    <div className={`payment-page`}>
+      <header className={`payment-page-title`}>결제하기</header>
+      <div className={`payment-page-wrapper`}>
         <div className="order-section">
           <div className="delivery">
-            <header>배송 옵션</header>
-            <div className="inputWrap-name">
-              <input
-                className="input"
-                type="text"
-                placeholder="성"
-                value={familyName}
-                onChange={(e) => setFamilyName(e.target.value)}
-              />
-              <input
-                className="input"
-                type="text"
-                placeholder="이름"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-            </div>
-            <div className="inputWrap-address">
-              <input
-                className="input"
-                type="text"
-                placeholder="도로명, 건물명을 입력해주세요."
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-              <input
-                className="input"
-                type="text"
-                placeholder="상세 주소를 입력해주세요."
-                value={detailAddress}
-                onChange={(e) => setDetailAddress(e.target.value)}
-              />
-            </div>
-            <div className="inputWrap-phone-email">
-              <input
-                className="input"
-                type="text"
-                placeholder="우편번호"
-                value={postCode}
-                onChange={(e) => setPostCode(e.target.value)}
-              />
-              <input
-                className="input"
-                type="text"
-                placeholder="전화번호"
-                value={phoneNum}
-                onChange={(e) => setPhoneNum(e.target.value)}
-              />
-            </div>
+            <header>
+              배송 옵션
+              <button
+                className="address-list-btn"
+                onClick={() => setAddressModalOpen(true)}
+              >
+                배송지 조회
+              </button>
+            </header>
+            <AddressRegistration
+              memberId={memberId}
+              addressData={addressData}
+              setAddressData={setAddressData}
+              defaultAddress={defaultAddress}
+              setDefaultAddress={setDefaultAddress}
+              fetchBasicOnCheckbox={fetchBasicOnCheckbox}
+              setFetchBasicOnCheckbox={setFetchBasicOnCheckbox}
+              setAddressModalOpen={setAddressModalOpen}
+              selectedAddressData={selectedAddressData}
+            />
             <div className="button-section">
               <button
-                disabled={notAllow}
                 onClick={() => handleShowPayOption()}
                 className="save-button"
               >
@@ -319,6 +423,13 @@ function PaymentPage() {
           </div>
         </div>
       </div>
+      <AddressList
+        memberId={memberId}
+        addressModalOpen={addressModalOpen}
+        setAddressModalOpen={setAddressModalOpen}
+        selectedAddressData={selectedAddressData}
+        setSelectedAddressData={setSelectedAddressData}
+      />
     </div>
   );
 }

@@ -5,6 +5,7 @@
     flex-flow: column;
     justify-content: flex-start;
     align-items: center;
+    position: relative;
 }
 
 .payment-page-title {
@@ -47,6 +48,19 @@
     align-items: center;
     font-size: 24px;
     font-weight: bold;
+}
+
+.address-list-btn {
+    margin-left: 30px;
+}
+
+.payment-page>.payment-page-wrapper>.order-section>.delivery>.my-address-list-page {
+    width: 100%;
+    padding-top: 0px;
+}
+
+.payment-page>.payment-page-wrapper>.order-section>.delivery>.my-address-list-page>.address-registration-form>.checkbox-group {
+    border-bottom: none;
 }
 
 .inputWrap-name {
