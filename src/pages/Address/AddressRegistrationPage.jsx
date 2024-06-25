@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import swal from "sweetalert";
 // CSS
 import "./AddressListPage.css";
 import "./AddressRegistrationPage.css";
@@ -9,6 +10,8 @@ import DaumPostcode from "react-daum-postcode";
 
 function AddressRegistrationPage({ isLoggedin, memberId }) {
   const [isOpen, setIsOpen] = useState(false);
+  const isDefaultAddressRef = useRef(false); // useRef로 기본 주소 체크박스 상태 관리
+  const [defaultAddressState, setDefaultAddressState] = useState(false); // useState로 체크박스 상태 관리
   const [addressData, setAddressData] = useState({
     addressId: "",
     addressName: "",
@@ -20,7 +23,7 @@ function AddressRegistrationPage({ isLoggedin, memberId }) {
     phoneNumberPrefix: "",
     phoneNumberPart1: "",
     phoneNumberPart2: "",
-    recipientPhone: "010",
+    recipientPhone: "",
   });
 
   const themeObj = {
@@ -56,16 +59,45 @@ function AddressRegistrationPage({ isLoggedin, memberId }) {
         }`;
       }
 
+      console.log(`${name} updated to ${newValue}`);
       return updatedState;
     });
+    if (name === "isDefaultAddress") {
+      isDefaultAddressRef.current = checked;
+    }
+  };
+
+  const validateFields = () => {
+    const { addressName, recipient, postCode, address, detailAddress } =
+      addressData;
+
+    if (!addressName || !recipient || !postCode || !address || !detailAddress) {
+      return false;
+    }
+    return true;
   };
 
   const handleNewAddressSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateFields()) {
+      swal(
+        "필수 필드를 모두 입력해주세요",
+        "주소명, 성명, 우편번호, 주소, 상세주소는 필수 입력 항목입니다.",
+        "error"
+      );
+      return;
+    }
+
     try {
+      const updatedAddressData = {
+        ...addressData,
+        isDefaultAddress: isDefaultAddressRef.current,
+      };
+      console.log(updatedAddressData); // 전송 전 updatedAddressData 확인
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_BASE_URL}/address/${memberId}`,
-        addressData,
+        updatedAddressData,
         {
           headers: {
             Authorization: localStorage.getItem("Authorization"),
@@ -77,8 +109,14 @@ function AddressRegistrationPage({ isLoggedin, memberId }) {
       navigate("/user/mypage/address");
     } catch (error) {
       console.error("Error creating address:", error);
+      Swal.fire({
+        icon: "error",
+        title: "주소 생성 실패",
+        text: "주소 생성 중 오류가 발생했습니다. 다시 시도해주세요.",
+      });
     }
   };
+
   const toggleHandler = () => {
     setIsOpen((prevOpenState) => !prevOpenState);
   };
@@ -94,11 +132,15 @@ function AddressRegistrationPage({ isLoggedin, memberId }) {
   };
 
   const closeHandler = (state) => {
-    if (state === "FORCE_CLOSE") {
-      setIsOpen(false);
-    } else if (state === "COMPLETE_CLOSE") {
+    if (state === "FORCE_CLOSE" || state === "COMPLETE_CLOSE") {
       setIsOpen(false);
     }
+  };
+
+  const handleCheckboxChange = () => {
+    setDefaultAddressState((prevState) => !prevState);
+    isDefaultAddressRef.current = !defaultAddressState;
+    console.log(isDefaultAddressRef);
   };
 
   return (
@@ -213,6 +255,7 @@ function AddressRegistrationPage({ isLoggedin, memberId }) {
               value={addressData.phoneNumberPrefix}
               onChange={handleChange}
             >
+              <option value=""></option>
               <option value="010">010</option>
               <option value="011">011</option>
               <option value="016">016</option>
@@ -245,8 +288,8 @@ function AddressRegistrationPage({ isLoggedin, memberId }) {
             type="checkbox"
             id="isDefaultAddress"
             name="isDefaultAddress"
-            checked={addressData.isDefaultAddress}
-            onChange={handleChange}
+            checked={defaultAddressState} // useState로 상태 관리
+            onChange={handleCheckboxChange} // 상태 변경
           />
           <label htmlFor="isDefaultAddress">기본 배송지로 저장</label>
         </div>

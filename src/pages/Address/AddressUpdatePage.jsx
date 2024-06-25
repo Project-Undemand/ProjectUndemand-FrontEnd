@@ -23,7 +23,7 @@ function AddressUpdatePage({ isLoggedin, memberId }) {
     phoneNumberPrefix: "",
     phoneNumberPart1: "",
     phoneNumberPart2: "",
-    recipientPhone: "",
+    recipientPhone: "010",
   });
 
   const themeObj = {
@@ -94,7 +94,7 @@ function AddressUpdatePage({ isLoggedin, memberId }) {
         ...addressData,
         defaultAddress: isDefaultAddressRef.current,
       };
-      console.log(updatedAddressData); // 전송 전 updatedAddressData 확인
+
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_BASE_URL}/address/${memberId}/${addressId}`,
         updatedAddressData,
