@@ -113,6 +113,17 @@ function MyReviewPage({ isLoggedin, memberId }) {
     setRUModalOpen(false);
   };
 
+  const handleImageClick = (imgPath) => {
+    const imgElement = document.createElement("img");
+    imgElement.src = imgPath;
+    imgElement.alt = "Review Image";
+    imgElement.className = "swal-content__img"; // 클래스 네임 설정
+
+    swal({
+      content: imgElement,
+    });
+  };
+
   const handleReviewDelete = async (reviewId) => {
     swal({
       title: "리뷰 삭제",
@@ -250,14 +261,8 @@ function MyReviewPage({ isLoggedin, memberId }) {
                               tableRow.productName
                             }의 ${index}번 리뷰 이미지 ${imgIndex + 1}`}
                             className="review-image"
+                            onClick={() => handleImageClick(imgPath)} // 이미지 클릭 핸들러 추가
                           />
-                          {/* <img
-                            src={imgPath}
-                            alt={`상품명 ${
-                              tableRow.productName
-                            }의 ${index}번 리뷰 이미지 ${imgIndex + 1}`}
-                            className="preview-image"
-                          /> */}
                         </div>
                       ))}
                   </div>
