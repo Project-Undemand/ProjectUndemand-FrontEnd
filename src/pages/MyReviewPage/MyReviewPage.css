@@ -154,8 +154,8 @@
 }
 
 .review-image-container {
-  height: 100%;
-  width: 100%;
+  height: 120px;
+  width: 100px;
 
   position: relative; /* 미리보기 이미지를 위한 상대 위치 설정 */
 
@@ -164,6 +164,14 @@
   align-items: center;
 
   z-index: 5;
+}
+
+.swal-content img {
+  max-width: 450px; /* 가로 최대 길이 450px */
+  max-height: 600px; /* 세로 최대 길이 450px */
+  width: 100%; /* 가로가 450px 이하일 때 100%로 맞춤 */
+  height: auto; /* 비율을 유지한 채로 세로 길이 자동 조정 */
+  object-fit: contain; /* 이미지가 창에 맞추어져 보이도록 함 */
 }
 
 .review-image {
