@@ -1,91 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import axios from "axios";
 import swal from "sweetalert";
 // CSS
 import "./MyPaymentHistoryPage.css";
 import "../../components/ReviewModal/ReviewModal.css";
+import { setOrderGroup } from "../../store";
 
 import { handleCartSubmit, handleAddAllToCart } from "../CartPage/CartUtil.jsx";
 import { ReviewModal } from "../../components/ReviewModal/ReviewModal.jsx";
+import { MyProfilePage } from "../MyProfilePage/MyProfilePage.jsx";
 
 function MyPaymentHistoryPage({
-  memberId,
   isLoggedin,
+  memberId,
+  profileData,
+  profileImageUrl,
   cartProducts,
   setCartProducts,
+  orderGroup,
+  productInventory,
 }) {
-  const [orderGroup, setOrderGroup] = useState({});
-  const [productInventory, setProductInventory] = useState([]);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const ReviewTitleImage =
     "https://png.pngtree.com/png-clipart/20220530/original/pngtree-shopping-basket-equipment-market-mall-png-image_7768946.png";
 
-  const navigate = useNavigate(); // navigate 사용
-
-  const fetchPaymentHistory = async () => {
-    try {
-      // 로컬 스토리지에서 Authorization 토큰 가져오기
-      const authorization = localStorage.getItem("Authorization");
-
-      // Authorization 헤더를 포함한 axios 요청
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_BASE_URL}/paymenthistory/${memberId}`,
-        {
-          headers: {
-            Authorization: authorization,
-          },
-          withCredentials: true,
-        }
-      );
-
-      // 그룹화된 데이터로 상태 설정
-      const groupedData = groupByOrderId(response.data);
-      setOrderGroup(groupedData);
-
-      // 각 상품에 대해 데이터 조회
-      const fetchProductData = async () => {
-        const inventories = [];
-        for (const orderId in groupedData) {
-          const products = groupedData[orderId].products;
-          for (const product of products) {
-            const productResponse = await axios.get(
-              `${process.env.REACT_APP_BACKEND_BASE_URL}/products/${product.productId}`
-            );
-
-            if (productResponse.status === 200) {
-              const invenResponse = await axios.get(
-                `${process.env.REACT_APP_BACKEND_BASE_URL}/inventory`,
-                {
-                  headers: {
-                    Authorization: localStorage.getItem("Authorization"),
-                  },
-                  withCredentials: true,
-                }
-              );
-
-              const invenResData = invenResponse.data;
-              const filteredInventory = invenResData.filter(
-                (inven) =>
-                  parseInt(inven.productId) === parseInt(product.productId)
-              );
-
-              inventories.push(...filteredInventory);
-            }
-          }
-        }
-        setProductInventory(inventories);
-      };
-
-      fetchProductData();
-    } catch (error) {
-      console.error(`잘못된 요청입니다:`, error);
-    }
-  };
-
-  useEffect(() => {
-    fetchPaymentHistory();
-  }, [memberId]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSearchInvenId = (color, size) => {
     if (color && size) {
@@ -126,10 +69,18 @@ function MyPaymentHistoryPage({
 
   return (
     <div className="my-payment-history-page">
-      <div className="payhis-page-title">
-        <span>구매 내역</span>
-        <div className="total-payhis-count">
-          ({`${Object.keys(orderGroup).length}개`})
+      <MyProfilePage
+        isLoggedin={isLoggedin}
+        memberId={memberId}
+        profileData={profileData}
+        profileImageUrl={profileImageUrl}
+      />
+      <div className="payhis-page-title-container">
+        <div className="payhis-page-title">
+          <span>구매 내역</span>
+          <div className="total-payhis-count">
+            ({`${Object.keys(orderGroup).length}개`})
+          </div>
         </div>
       </div>
       <div className="payhis-page-filter">
@@ -277,7 +228,7 @@ function MyPaymentHistoryPage({
 }
 
 // Helper function to group payments by orderId
-const groupByOrderId = (paymentHistory) => {
+export const groupByOrderId = (paymentHistory) => {
   return paymentHistory.reduce((groups, payment) => {
     const {
       orderId,

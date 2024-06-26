@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaRegStar, FaStar } from "react-icons/fa6";
+import { useSelector, useDispatch } from "react-redux";
 // 외부 라이브러리 및 모듈
 import axios from "axios";
 import swal from "sweetalert";
 // 컴포넌트 & CSS
+import { setMyReviewList } from "../../store";
 import ReviewUpdateModal from "../../components/ReviewUpdateModal/ReviewUpdateModal";
+import { MyProfilePage } from "../MyProfilePage/MyProfilePage.jsx";
 import "./MyReviewPage.css";
 
-function MyReviewPage({ isLoggedin, memberId }) {
+function MyReviewPage({ isLoggedin, memberId, profileData, profileImageUrl }) {
+  const dispatch = useDispatch(); // Redux 디스패치 훅
+
   const [selectedReviewSortOption, setSelectedReviewSortOption] =
     useState("최신순");
   const [selectedInquirySortOption, setSelectedInquirySortOption] =
@@ -19,7 +24,6 @@ function MyReviewPage({ isLoggedin, memberId }) {
   const [selectedInquiryFilterOption, setSelectedInquiryFilterOption] =
     useState("전체 보기");
   const [filterOptionClick, setFilterOptionClick] = useState(false);
-  const [productReviewData, setProductReviewData] = useState([]);
   const [rUModalOpen, setRUModalOpen] = useState(false);
   const [selectedRId, setSelectedRId] = useState(null);
   const [thumbnailImages, setThumbnailImages] = useState([]);
@@ -28,35 +32,13 @@ function MyReviewPage({ isLoggedin, memberId }) {
   const defaultImageURL =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTRx9zMfm7p_YRHoXXLVhaI2YpE4bMGgwnyg&s";
 
-  useEffect(() => {
-    const fetchProductReviewData = async () => {
-      try {
-        // 로컬 스토리지에서 Authorization 토큰 가져오기
-        const authorization = localStorage.getItem("Authorization");
-
-        // Authorization 헤더를 포함한 axios 요청
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_BASE_URL}/review/user/${memberId}`,
-          {
-            headers: {
-              Authorization: authorization,
-            },
-            withCredentials: true,
-          }
-        );
-        setProductReviewData(response.data);
-      } catch (error) {
-        console.error(error.response.data);
-      }
-    };
-
-    fetchProductReviewData();
-  }, [memberId]);
+  const myReviewList = useSelector((state) => state.myReviewList);
+  const reviewCount = Object.keys(myReviewList).length;
 
   useEffect(() => {
     const fetchThumbnail = async () => {
       try {
-        const thumbnailPromises = productReviewData.map(async (userReview) => {
+        const thumbnailPromises = myReviewList.map(async (userReview) => {
           const response = await axios.get(
             `${process.env.REACT_APP_BACKEND_BASE_URL}/thumbnail/${userReview.productId}`,
             {
@@ -76,12 +58,12 @@ function MyReviewPage({ isLoggedin, memberId }) {
     };
 
     fetchThumbnail();
-  }, [productReviewData]);
+  }, [myReviewList]);
 
   useEffect(() => {
     const checkImages = async () => {
       const updatedReviewData = await Promise.all(
-        productReviewData.map(async (review) => {
+        myReviewList.map(async (review) => {
           const updatedImgPaths = await Promise.all(
             review.reviewImgPaths.slice(0, 5).map(async (imgPath) => {
               const url = `${process.env.REACT_APP_BACKEND_URL_FOR_IMG}${imgPath}`;
@@ -96,13 +78,14 @@ function MyReviewPage({ isLoggedin, memberId }) {
           return { ...review, reviewImgPaths: updatedImgPaths };
         })
       );
-      setProductReviewData(updatedReviewData);
+      dispatch(setMyReviewList(updatedReviewData)); // Redux 액션 디스패치
       setIsImagesChecked(true); // 이미지 상태 확인 완료
     };
-    if (productReviewData.length > 0 && !isImagesChecked) {
+
+    if (!isImagesChecked) {
       checkImages();
     }
-  }, [productReviewData, isImagesChecked]);
+  }, [isImagesChecked]); // 의존성 배열에서 productReviewData 제거
 
   const handleRUModalOpen = async (reviewId) => {
     setRUModalOpen(true);
@@ -180,9 +163,15 @@ function MyReviewPage({ isLoggedin, memberId }) {
 
   return (
     <div className="review-page">
+      <MyProfilePage
+        isLoggedin={isLoggedin}
+        memberId={memberId}
+        profileData={profileData}
+        profileImageUrl={profileImageUrl}
+      />
       <div className="review-page-title-container">
         <div className="review-page-title">내 리뷰</div>
-        <div className="total-review-count">{`(${productReviewData.length}개의 리뷰)`}</div>
+        <div className="total-review-count">{`(${reviewCount}개의 리뷰)`}</div>
       </div>
       <div className="review-page-filter">
         <div className="review-sort-box">
@@ -218,8 +207,8 @@ function MyReviewPage({ isLoggedin, memberId }) {
           </ul>
         </div>
       </div>
-      {productReviewData && productReviewData.length > 0 ? (
-        productReviewData.map((tableRow, index) => {
+      {myReviewList && myReviewList.length > 0 ? (
+        myReviewList.map((tableRow, index) => {
           return (
             <div key={tableRow.reviewId} className="review-container">
               <div className="review-product">
@@ -293,7 +282,7 @@ function MyReviewPage({ isLoggedin, memberId }) {
           reviewId={selectedRId}
           memberId={memberId}
           modalClose={closeRUModal}
-          updateReviewData={productReviewData}
+          updateReviewData={myReviewList}
         ></ReviewUpdateModal>
       )}
     </div>
