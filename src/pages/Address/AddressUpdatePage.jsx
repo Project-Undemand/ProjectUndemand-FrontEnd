@@ -1,13 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
 import axios from "axios";
 // CSS
 import "./AddressListPage.css";
 import "./AddressRegistrationPage.css";
+import { fetchAddressLists } from "../MyPage/MyPage.jsx";
+
 // reeact-daum-postcode
 import DaumPostcode from "react-daum-postcode";
 
 function AddressUpdatePage({ isLoggedin, memberId }) {
+  const navigate = useNavigate(); // 페이지 이동을 위한 네비게이트 훅
+  const dispatch = useDispatch(); // Redux 디스패치 훅
+
   const { addressId } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const isDefaultAddressRef = useRef(false); // useRef로 기본 주소 체크박스 상태 관리
@@ -37,8 +44,6 @@ function AddressUpdatePage({ isLoggedin, memberId }) {
     width: "360px",
     height: "480px",
   };
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAddressDetails = async () => {
@@ -106,6 +111,7 @@ function AddressUpdatePage({ isLoggedin, memberId }) {
         }
       );
       console.log("Address updated:", response.data);
+      fetchAddressLists(dispatch, memberId); // 주소 목록 다시 불러오기
       navigate("/user/mypage/address");
     } catch (error) {
       console.error("Error updating address:", error);

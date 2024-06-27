@@ -40,36 +40,11 @@ function MyPage({
   const [orderGroup, setLocalOrderGroup] = useState({});
   const [productInventory, setProductInventory] = useState([]);
 
-  useEffect(() => {
-    const fetchWishLists = async () => {
-      try {
-        // Authorization 헤더를 포함한 axios 요청
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_BASE_URL}/wishlist/${memberId}`,
-          {
-            headers: {
-              Authorization: localStorage.getItem("Authorization"),
-            },
-            withCredentials: true,
-          }
-        );
-
-        dispatch(setWishList(response.data)); // Redux 액션 디스패치
-      } catch (error) {
-        console.error(`잘못된 요청입니다:`, error);
-      }
-    };
-
-    fetchWishLists();
-    fetchPaymentHistory();
-    fetchProductReviewData();
-    fetchAddressLists();
-  }, [memberId]);
-
-  const fetchAddressLists = async () => {
+  const fetchWishLists = async () => {
     try {
+      // Authorization 헤더를 포함한 axios 요청
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_BASE_URL}/address/${memberId}`,
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/wishlist/${memberId}`,
         {
           headers: {
             Authorization: localStorage.getItem("Authorization"),
@@ -77,9 +52,10 @@ function MyPage({
           withCredentials: true,
         }
       );
-      dispatch(setAddressList(response.data));
+
+      dispatch(setWishList(response.data)); // Redux 액션 디스패치
     } catch (error) {
-      console.error("Error fetching addresses:", error);
+      console.error(`잘못된 요청입니다:`, error);
     }
   };
 
@@ -167,6 +143,13 @@ function MyPage({
       console.error(error.response.data);
     }
   };
+
+  useEffect(() => {
+    fetchWishLists();
+    fetchPaymentHistory();
+    fetchProductReviewData();
+    fetchAddressLists(dispatch, memberId);
+  }, [memberId]);
 
   return (
     <div className="my-page">
@@ -290,6 +273,24 @@ function MyPage({
 }
 
 export { MyPage };
+
+// Export fetchAddressLists function
+export const fetchAddressLists = async (dispatch, memberId) => {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_BASE_URL}/address/${memberId}`,
+      {
+        headers: {
+          Authorization: localStorage.getItem("Authorization"),
+        },
+        withCredentials: true,
+      }
+    );
+    dispatch(setAddressList(response.data));
+  } catch (error) {
+    console.error("Error fetching addresses:", error);
+  }
+};
 
 // PrivateRoutes 설정으로 인해, 이용불가. 추후 구현예정 [24.06.05]
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import axios from "axios";
 import swal from "sweetalert";
@@ -8,6 +8,7 @@ import swal from "sweetalert";
 import "./AddressListPage.css";
 import "./AddressRegistrationPage.css";
 import { MyProfilePage } from "../MyProfilePage/MyProfilePage.jsx";
+import { fetchAddressLists } from "../MyPage/MyPage.jsx";
 
 function AddressListPage({
   isLoggedin,
@@ -19,7 +20,8 @@ function AddressListPage({
   const [allChecked, setAllChecked] = useState(false);
   const addressLists = useSelector((state) => state.addressList);
 
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // 페이지 이동을 위한 네비게이트 훅
+  const dispatch = useDispatch(); // Redux 디스패치 훅
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
@@ -71,7 +73,7 @@ function AddressListPage({
           );
           await Promise.all(deletePromises);
           console.log("Addresses deleted");
-          fetchAddressLists(); // 주소 목록 다시 불러오기
+          fetchAddressLists(dispatch, memberId); // 주소 목록 다시 불러오기
           setSelectedAddresses([]); // 선택된 주소 초기화
           setAllChecked(false); // 전체 선택 체크박스 상태 초기화
           swal("주소가 성공적으로 삭제되었습니다.", {
@@ -101,7 +103,7 @@ function AddressListPage({
           withCredentials: true,
         }
       );
-      fetchAddressLists(); // 주소 목록 다시 불러오기
+      fetchAddressLists(dispatch, memberId); // 주소 목록 다시 불러오기
       swal("기본 배송지가 성공적으로 설정되었습니다.", {
         icon: "success",
       });
