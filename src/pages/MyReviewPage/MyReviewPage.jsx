@@ -196,40 +196,6 @@ function MyReviewPage({ isLoggedin, memberId }) {
         <div className="review-page-title">내 리뷰</div>
         <div className="total-review-count">{`(${productReviewData.length}개의 리뷰)`}</div>
       </div>
-      <div className="review-page-filter">
-        <div className="review-sort-box">
-          <div
-            className="selected-sort-option"
-            onClick={() => setSortOptionClick((prevState) => !prevState)}
-          >{`정렬: ${selectedReviewSortOption}`}</div>
-          <ul
-            className={`review-sort-option ${sortOptionClick && "drop-option"}`}
-          >
-            <li>최신순</li>
-            <li>오래된순</li>
-            <li>높은 평점순</li>
-            <li>낮은 평점순</li>
-          </ul>
-        </div>
-        <div className="review-search-option"></div>
-        <div className="review-filter-box">
-          <div
-            className="selected-filter-option"
-            onClick={() => setFilterOptionClick((prevState) => !prevState)}
-          >{`필터: ${selectedReviewFilterOption}`}</div>
-          <ul
-            className={`review-filter-option ${
-              filterOptionClick && "drop-option"
-            }`}
-          >
-            <li>{`별별별별별 (7)`}</li>
-            <li>{`별별별별 (3)`}</li>
-            <li>{`별별별 (0)`}</li>
-            <li>{`별별 (0)`}</li>
-            <li>{`별 (0)`}</li>
-          </ul>
-        </div>
-      </div>
       {productReviewData && productReviewData.length > 0 ? (
         productReviewData.map((tableRow, index) => {
           return (
