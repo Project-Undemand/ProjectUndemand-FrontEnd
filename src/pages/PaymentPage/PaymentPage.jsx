@@ -59,6 +59,7 @@ function PaymentPage() {
     } else {
       setNotAllow(true);
       setShowPayOption(false);
+      setPayMethod("");
     }
   }, [ordererName, address, detailAddress, phoneNumber, postCode]);
 
@@ -307,7 +308,9 @@ function PaymentPage() {
             <header>
               배송 옵션
               <button
-                className="address-list-btn"
+                className={`address-list-btn ${
+                  addressModalOpen && "address-list-btn-clicked"
+                }`}
                 onClick={() => setAddressModalOpen(true)}
               >
                 배송지 조회
