@@ -71,19 +71,12 @@ export const socialLoginAccessToken = async (navigate) => {
     const newAccessToken = response.data["accessToken"];
     localStorage.setItem("Authorization", "Bearer " + newAccessToken);
 
-    const base64Url = newAccessToken.split(".")[1];
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split("")
-        .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-        .join("")
-    );
+    const payloadObject = decodeJWT(newAccessToken);
 
-    const payloadObject = JSON.parse(jsonPayload);
-    console.log("memberId : ", payloadObject.memberId);
-    localStorage.setItem("memberId", payloadObject.memberId);
-    localStorage.setItem("memberRole", payloadObject.role);
+    if (payloadObject) {
+      localStorage.setItem("memberId", payloadObject.memberId);
+      localStorage.setItem("memberRole", payloadObject.role);
+    }
   } catch (error) {
     console.error(
       "refresh token 이 만료되었기 때문에, access token 재발급에 실패했습니다. ",
@@ -123,11 +116,7 @@ export const isAccessTokenValid = (accessToken) => {
       const currentTime = Math.floor(Date.now() / 1000); // 현재 시각 (초 단위)
       const tokenExpirationTime = decodedToken.exp; // 토큰 만료 시간 (초 단위)
 
-      if (tokenExpirationTime > currentTime) {
-        return true;
-      } else {
-        return false;
-      }
+      return tokenExpirationTime > currentTime;
     } else {
       console.error("Token does not have exp field");
       return false;

@@ -4,7 +4,6 @@
   flex-flow: column;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 30px;
 }
 
 .my-wish-list-page-title {
@@ -30,7 +29,7 @@
   justify-content: flex-start;
   align-items: center;
 
-  margin-top: 60px;
+  margin-top: 10px;
 }
 
 .my-wish-product-card {

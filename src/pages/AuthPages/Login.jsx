@@ -1,31 +1,23 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 // 외부
 import axios from "axios";
 import swal from "sweetalert";
 // 컴포넌트 & CSS
 import { SnsLogins } from "../../components/SocialLogins/SnsLogins.jsx";
-import { extractUserInfoFromAccessAndRefresh } from "../../components/Token/TokenUtil.jsx";
-
+import { extractUserInfoFromAccess } from "../../components/Token/TokenUtil.jsx";
+import { fetchProfile, fetchProfileImage } from "../../profileSlice.js"; // Import the necessary actions
 import "./Signup.css";
 // import { type } from "@testing-library/user-event/dist/type/index.js";
 
 const Login = ({ isLoggedin, setIsLoggedin }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  // 이미 로그인 된 상태에서, 로그인 페이지 접근 제한
-  useEffect(() => {
-    if (isLoggedin) {
-      swal({
-        title:
-          "이미 로그인을 한 상태에서, 로그인 페이지 접근은 불가합니다. You cannot access the login page while logged in.",
-      });
-      navigate("/");
-    }
-  }, [isLoggedin, navigate]);
 
   const handleEmail = (e) => {
     const newEmail = e.target.value;
@@ -58,15 +50,25 @@ const Login = ({ isLoggedin, setIsLoggedin }) => {
       );
 
       const newAccessToken = response.data.accessToken;
-      const newRefreshToken = response.data.refreshToken;
+      //   const newRefreshToken = response.data.refreshToken;
 
       if (parseInt(response.status) === 200) {
-        extractUserInfoFromAccessAndRefresh(newAccessToken, newRefreshToken);
+        // 로컬스토리지에 memberId ,memberRole ,Authorization 을 저장
+        extractUserInfoFromAccess(newAccessToken);
+        // App.js 에서 isLoggedin 여부를 관리하는데, 그걸 true 로 해주면 로그인 된 상태로 인식
         setIsLoggedin(true);
+
+        const memberId = localStorage.getItem("memberId");
+
+        // Fetch profile data and image after login
+        await Promise.all([
+          dispatch(fetchProfile(memberId)),
+          dispatch(fetchProfileImage(memberId)),
+        ]);
 
         setTimeout(() => {
           navigate("/");
-        }, 100);
+        }, 200);
       }
     } catch (error) {
       swal({

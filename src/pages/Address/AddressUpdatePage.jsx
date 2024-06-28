@@ -1,13 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
 import axios from "axios";
 // CSS
 import "./AddressListPage.css";
 import "./AddressRegistrationPage.css";
+import { fetchAddressLists } from "../MyPage/MyPage.jsx";
+
 // reeact-daum-postcode
 import DaumPostcode from "react-daum-postcode";
 
 function AddressUpdatePage({ isLoggedin, memberId }) {
+  const navigate = useNavigate(); // 페이지 이동을 위한 네비게이트 훅
+  const dispatch = useDispatch(); // Redux 디스패치 훅
+
   const { addressId } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const isDefaultAddressRef = useRef(false); // useRef로 기본 주소 체크박스 상태 관리
@@ -23,7 +30,7 @@ function AddressUpdatePage({ isLoggedin, memberId }) {
     phoneNumberPrefix: "",
     phoneNumberPart1: "",
     phoneNumberPart2: "",
-    recipientPhone: "",
+    recipientPhone: "010",
   });
 
   const themeObj = {
@@ -37,8 +44,6 @@ function AddressUpdatePage({ isLoggedin, memberId }) {
     width: "360px",
     height: "480px",
   };
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAddressDetails = async () => {
@@ -94,7 +99,7 @@ function AddressUpdatePage({ isLoggedin, memberId }) {
         ...addressData,
         defaultAddress: isDefaultAddressRef.current,
       };
-      console.log(updatedAddressData); // 전송 전 updatedAddressData 확인
+
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_BASE_URL}/address/${memberId}/${addressId}`,
         updatedAddressData,
@@ -106,6 +111,7 @@ function AddressUpdatePage({ isLoggedin, memberId }) {
         }
       );
       console.log("Address updated:", response.data);
+      fetchAddressLists(dispatch, memberId); // 주소 목록 다시 불러오기
       navigate("/user/mypage/address");
     } catch (error) {
       console.error("Error updating address:", error);
@@ -292,10 +298,7 @@ function AddressUpdatePage({ isLoggedin, memberId }) {
               배송 주소록은 최대 10개까지 등록할 수 있으며, 별도로 등록하지 않을
               경우 최근 배송 주소록 기준으로 자동 업데이트 됩니다.
             </li>
-            <li class="item2">
-              자동 업데이트를 원하지 않을 경우 주소록 고정 선택을 선택하시면
-              선택된 주소록은 업데이트 대상에서 제외됩니다.
-            </li>
+            <li class="item2"></li>
             <li class="item3">
               기본 배송지는 1개만 저장됩니다. 다른 배송지를 기본 배송지로
               설정하시면 기본 배송지가 변경됩니다.

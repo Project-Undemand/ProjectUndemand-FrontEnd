@@ -96,6 +96,7 @@ const UpdateUserInfoPage = ({
     }
   };
 
+  const email = profileData?.member?.email || "없음";
   const nickname = profileData?.member?.nickname || "없음";
   const memberAges = profileData?.memberAges || "없음";
   const memberGender = profileData?.memberGender || "없음";
@@ -162,13 +163,13 @@ const UpdateUserInfoPage = ({
             />
           </div>
         </div>
-        <div className="profile-info-container">
+        <div className="profile-update-info-container">
           <div className="account-activate">
             <span>계정 비활성화</span>
             <button>비활성화</button>
           </div>
         </div>
-        <div className="profile-info-container">
+        <div className="profile-update-info-container">
           <div className="account-activate">
             <span>휴대폰 인증</span>
             <button>인증하기</button>
