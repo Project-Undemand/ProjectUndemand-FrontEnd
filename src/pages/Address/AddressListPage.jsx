@@ -1,38 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
 import axios from "axios";
 import swal from "sweetalert";
 // CSS
 import "./AddressListPage.css";
 import "./AddressRegistrationPage.css";
+import { MyProfilePage } from "../MyProfilePage/MyProfilePage.jsx";
+import { fetchAddressLists } from "../MyPage/MyPage.jsx";
 
-function AddressListPage({ isLoggedin, memberId }) {
-  const [addressLists, setAddressLists] = useState([]);
+function AddressListPage({
+  isLoggedin,
+  memberId,
+  profileData,
+  profileImageUrl,
+}) {
   const [selectedAddresses, setSelectedAddresses] = useState([]);
   const [allChecked, setAllChecked] = useState(false);
+  const addressLists = useSelector((state) => state.addressList);
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchAddressLists();
-  }, [memberId]);
-
-  const fetchAddressLists = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_BASE_URL}/address/${memberId}`,
-        {
-          headers: {
-            Authorization: localStorage.getItem("Authorization"),
-          },
-          withCredentials: true,
-        }
-      );
-      setAddressLists(response.data);
-    } catch (error) {
-      console.error("Error fetching addresses:", error);
-    }
-  };
+  const navigate = useNavigate(); // 페이지 이동을 위한 네비게이트 훅
+  const dispatch = useDispatch(); // Redux 디스패치 훅
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
@@ -84,7 +73,7 @@ function AddressListPage({ isLoggedin, memberId }) {
           );
           await Promise.all(deletePromises);
           console.log("Addresses deleted");
-          fetchAddressLists(); // 주소 목록 다시 불러오기
+          fetchAddressLists(dispatch, memberId); // 주소 목록 다시 불러오기
           setSelectedAddresses([]); // 선택된 주소 초기화
           setAllChecked(false); // 전체 선택 체크박스 상태 초기화
           swal("주소가 성공적으로 삭제되었습니다.", {
@@ -114,7 +103,7 @@ function AddressListPage({ isLoggedin, memberId }) {
           withCredentials: true,
         }
       );
-      fetchAddressLists(); // 주소 목록 다시 불러오기
+      fetchAddressLists(dispatch, memberId); // 주소 목록 다시 불러오기
       swal("기본 배송지가 성공적으로 설정되었습니다.", {
         icon: "success",
       });
@@ -128,6 +117,12 @@ function AddressListPage({ isLoggedin, memberId }) {
 
   return (
     <div className="my-address-list-page">
+      <MyProfilePage
+        isLoggedin={isLoggedin}
+        memberId={memberId}
+        profileData={profileData}
+        profileImageUrl={profileImageUrl}
+      />
       <div className="my-address-list-page-top">
         <div className="my-address-list-page-title">
           <h2>Address</h2>
@@ -160,7 +155,7 @@ function AddressListPage({ isLoggedin, memberId }) {
                 />
               </th>
 
-              <th scope="col">주소록 고정</th>
+              <th scope="col">기본 배송지</th>
               <th scope="col">배송지명</th>
               <th scope="col">수령인</th>
               <th scope="col">휴대전화</th>
@@ -184,7 +179,11 @@ function AddressListPage({ isLoggedin, memberId }) {
                   <td>
                     <button
                       onClick={() => handleSetDefaultAddress(address.addressId)}
-                      style={{ border: "none", background: "none" }}
+                      style={{
+                        border: "none",
+                        background: "none",
+                        cursor: "pointer",
+                      }}
                     >
                       <img
                         src="//img.echosting.cafe24.com/skin/base_ko_KR/myshop/btn_address_fix.gif"

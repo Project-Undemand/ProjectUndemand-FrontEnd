@@ -41,6 +41,9 @@ function ProductDetailPage({ isLoggedin, memberId, setCartProducts }) {
   const [firstClick, setFirstClick] = useState(true);
   const [thumbnailImages, setThumbnailImages] = useState([]);
   const [selectedThumbnail, setSelectedThumbnail] = useState();
+  const [reviewImgLoadError, setReviewImgLoadError] = useState(false);
+  const errorReviewImgSrc =
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTRx9zMfm7p_YRHoXXLVhaI2YpE4bMGgwnyg&s";
 
   const fetchProduct = async () => {
     try {
@@ -100,12 +103,12 @@ function ProductDetailPage({ isLoggedin, memberId, setCartProducts }) {
           }
         );
         const paymentHistories = response.data.filter(
-          (paymentHistory) => paymentHistory.product === product.productName
+          (paymentHistory) => paymentHistory.productName === product.productName
         );
         setPHistories(paymentHistories);
         const filteredPaymentHistories = response.data.filter(
           (paymentHistory) =>
-            paymentHistory.product === product.productName &&
+            paymentHistory.productName === product.productName &&
             !paymentHistory.review
         );
         setFPHistories(filteredPaymentHistories);
@@ -534,8 +537,13 @@ function ProductDetailPage({ isLoggedin, memberId, setCartProducts }) {
                             </div>
                             {tableRow.reviewImgPaths.length > 0 && (
                               <img
-                                src={`${process.env.REACT_APP_BACKEND_URL_FOR_IMG}${tableRow.reviewImgPaths[0]}`}
+                                src={`${
+                                  reviewImgLoadError
+                                    ? errorReviewImgSrc
+                                    : process.env.REACT_APP_BACKEND_URL_FOR_IMG
+                                }${tableRow.reviewImgPaths[0]}`}
                                 alt={`상품명 ${product.productName}의 ${index}번 리뷰`}
+                                onError={() => setReviewImgLoadError(true)}
                                 className="detail-page-review-img"
                               />
                             )}

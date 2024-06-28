@@ -5,10 +5,13 @@ import swal from "sweetalert";
 // CSS
 import "./PaymentDetailPage.css";
 import { handleCartSubmit, handleAddAllToCart } from "../CartPage/CartUtil.jsx";
+import { MyProfilePage } from "../MyProfilePage/MyProfilePage.jsx";
 
 function PaymentDetailPage({
   isLoggedin,
   memberId,
+  profileData,
+  profileImageUrl,
   cartProducts,
   setCartProducts,
 }) {
@@ -112,119 +115,135 @@ function PaymentDetailPage({
   };
 
   return (
-    <div className="payment-histories">
-      <h1>주문 상세</h1>
-      {orderDetail && Object.keys(orderDetail).length > 0 ? (
-        <div>
-          {/* MyPaymentHistoryPage */}
-          <div key={orderId} className="histories-detail-container">
-            <div className="payment-content-title">
-              <span className="weight-font17">
-                {new Date(orderDetail.paiedAt).toLocaleDateString()}
-              </span>
-              <span className="weight-font17">주문 번호 {orderId}</span>
-            </div>
-            <div className="order-detail payhis-container">
-              <h2>결제 정보</h2>
-              <hr style={{ border: "0.5px solid #fafafa", margin: "8px 0" }} />
+    <div className="payment-detail-container">
+      <MyProfilePage
+        isLoggedin={isLoggedin}
+        memberId={memberId}
+        profileData={profileData}
+        profileImageUrl={profileImageUrl}
+      />
+      <div className="payment-histories">
+        <h1>주문 상세</h1>
+        {orderDetail && Object.keys(orderDetail).length > 0 ? (
+          <div>
+            {/* MyPaymentHistoryPage */}
+            <div key={orderId} className="histories-detail-container">
               <div className="payment-content-title">
-                <span>상품 가격</span>
-                <span>{orderDetail.totalPrice} 원</span>
-              </div>
-              <div className="payment-content-title">
-                <span>할인 금액</span>
-                <span>0 원</span>
-              </div>
-              <div className="payment-content-title">
-                <span>배송비</span>
-                <span>0 원</span>
-              </div>
-              <div className="payment-content-title">
-                <span>결제 상태</span>
-                <span>{getStatusTypeInKorean(orderDetail.statusType)}</span>
-              </div>
-              <hr style={{ border: "0.5px solid #fafafa", margin: "8px 0" }} />
-              <div className="payment-content-title">
-                <span>{orderDetail.payMethod.toUpperCase()} / 일시불</span>
-                <span>{orderDetail.totalPrice} 원</span>
-              </div>
-              <div className="payment-content-title">
-                <span className="weight-font17">총 결제 금액</span>
                 <span className="weight-font17">
-                  {orderDetail.totalPrice} 원
+                  {new Date(orderDetail.paiedAt).toLocaleDateString()}
                 </span>
+                <span className="weight-font17">주문 번호 {orderId}</span>
               </div>
-            </div>
-            <div className="payment-history-container">
-              <div className="payhis-container">
-                <div className="payhis-info-container">
-                  <span className="weight-font17">배송시작</span>
+              <div className="order-detail payhis-container">
+                <h2>결제 정보</h2>
+                <hr
+                  style={{ border: "0.5px solid #fafafa", margin: "8px 0" }}
+                />
+                <div className="payment-content-title">
+                  <span>상품 가격</span>
+                  <span>{orderDetail.totalPrice} 원</span>
                 </div>
-                {orderDetail.products.map((product, index) => {
-                  const productImgPathUrl = `${process.env.REACT_APP_BACKEND_URL_FOR_IMG}${product.imagePath}`;
-                  const { color, size } = parseOption(product.option);
-                  const invenId = handleSearchInvenId(color, size);
-                  return (
-                    <div key={index} className="payhis-product-info-container">
-                      <Link to={`/product/${product.productId}`}>
-                        <img
-                          src={productImgPathUrl}
-                          alt={product.productName}
-                          className="payhis-product-img"
-                        />
-                      </Link>
-                      <div className="payhis-product-info">
-                        <div className="price-cart-container">
-                          <span className="weight-font17">
-                            {product.productName}, {product.option}
-                          </span>
-                        </div>
-                        <div className="price-cart-container">
-                          <span className="weight-font17">
-                            {product.productPrice} 원, {product.productQuantity}{" "}
-                            개
-                          </span>
-                          <button
-                            className="payhisSmallButton"
-                            onClick={() =>
-                              handleCartSubmit(
-                                isLoggedin,
-                                invenId,
-                                memberId,
-                                product.productQuantity,
-                                setCartProducts,
-                                navigate
-                              )
-                            }
-                          >
-                            To Cart
-                          </button>
+                <div className="payment-content-title">
+                  <span>할인 금액</span>
+                  <span>0 원</span>
+                </div>
+                <div className="payment-content-title">
+                  <span>배송비</span>
+                  <span>0 원</span>
+                </div>
+                <div className="payment-content-title">
+                  <span>결제 상태</span>
+                  <span>{getStatusTypeInKorean(orderDetail.statusType)}</span>
+                </div>
+                <hr
+                  style={{ border: "0.5px solid #fafafa", margin: "8px 0" }}
+                />
+                <div className="payment-content-title">
+                  <span>{orderDetail.payMethod.toUpperCase()} / 일시불</span>
+                  <span>{orderDetail.totalPrice} 원</span>
+                </div>
+                <div className="payment-content-title">
+                  <span className="weight-font17">총 결제 금액</span>
+                  <span className="weight-font17">
+                    {orderDetail.totalPrice} 원
+                  </span>
+                </div>
+              </div>
+              <div className="payment-history-container">
+                <div className="payhis-container">
+                  <div className="payhis-info-container">
+                    <span className="weight-font17">배송시작</span>
+                  </div>
+                  {orderDetail.products.map((product, index) => {
+                    const productImgPathUrl = `${process.env.REACT_APP_BACKEND_URL_FOR_IMG}${product.imagePath}`;
+                    const { color, size } = parseOption(product.option);
+                    const invenId = handleSearchInvenId(color, size);
+                    return (
+                      <div
+                        key={index}
+                        className="payhis-product-info-container"
+                      >
+                        <Link to={`/product/${product.productId}`}>
+                          <img
+                            src={productImgPathUrl}
+                            alt={product.productName}
+                            className="payhis-product-img"
+                          />
+                        </Link>
+                        <div className="payhis-product-info">
+                          <div className="price-cart-container">
+                            <span className="weight-font17">
+                              {product.productName}, {product.option}
+                            </span>
+                          </div>
+                          <div className="price-cart-container">
+                            <span className="weight-font17">
+                              {product.productPrice} 원,{" "}
+                              {product.productQuantity} 개
+                            </span>
+                            <button
+                              className="payhisSmallButton"
+                              onClick={() =>
+                                handleCartSubmit(
+                                  isLoggedin,
+                                  invenId,
+                                  memberId,
+                                  product.productQuantity,
+                                  setCartProducts,
+                                  navigate
+                                )
+                              }
+                            >
+                              To Cart
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-
-            <div className="order-detail payhis-container">
-              <h2>{orderDetail.ordererName}</h2>
-              <hr style={{ border: "0.5px solid #fafafa", margin: "10px 0" }} />
-              <div className="payment-content-title">
-                <span>{orderDetail.buyerAddr} </span>
-              </div>
-              <div className="payment-content-title">
-                <span>{orderDetail.phoneNumber} </span>
-              </div>
-              <div className="payment-content-title">
-                <span>배송 요청사항 : 없음</span>
+              <div className="order-detail payhis-container">
+                <h2>{orderDetail.ordererName}</h2>
+                <hr
+                  style={{ border: "0.5px solid #fafafa", margin: "10px 0" }}
+                />
+                <div className="payment-content-title">
+                  <span>{orderDetail.buyerAddr} </span>
+                </div>
+                <div className="payment-content-title">
+                  <span>{orderDetail.phoneNumber} </span>
+                </div>
+                <div className="payment-content-title">
+                  <span>배송 요청사항 : 없음</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <p>주문 상세 정보를 불러오는 중입니다...</p>
-      )}
+        ) : (
+          <p>주문 상세 정보를 불러오는 중입니다...</p>
+        )}
+      </div>
     </div>
   );
 }

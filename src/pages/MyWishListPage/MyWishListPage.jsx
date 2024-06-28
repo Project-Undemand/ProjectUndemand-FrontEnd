@@ -1,39 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
 // CSS
 import "./MyWishListPage.css";
 import WishBtn from "../../components/WishBtn/WishBtn.jsx";
+import { MyProfilePage } from "../MyProfilePage/MyProfilePage.jsx";
 
-function MyWishListPage({ isLoggedin, memberId }) {
-  const [wishLists, setWishLists] = useState([]);
-
-  useEffect(() => {
-    const fetchWishLists = async () => {
-      try {
-        // Authorization 헤더를 포함한 axios 요청
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_BASE_URL}/wishlist/${memberId}`,
-          {
-            headers: {
-              Authorization: localStorage.getItem("Authorization"),
-            },
-            withCredentials: true,
-          }
-        );
-
-        setWishLists(response.data);
-        console.log(response.data);
-      } catch (error) {
-        console.error(`잘못된 요청입니다:`, error);
-      }
-    };
-
-    fetchWishLists();
-  }, [memberId]);
+function MyWishListPage({
+  isLoggedin,
+  memberId,
+  profileData,
+  profileImageUrl,
+}) {
+  const wishLists = useSelector((state) => state.wishList);
 
   return (
     <div className="my-wish-list-page">
+      <MyProfilePage
+        isLoggedin={isLoggedin}
+        memberId={memberId}
+        profileData={profileData}
+        profileImageUrl={profileImageUrl}
+      />
       <div className="my-wish-list-page-title">
         <span>찜한 상품</span>
         <div className="total-payhis-count">
