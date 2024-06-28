@@ -222,7 +222,7 @@ function Topbar({
                   <ul className="user-btn-box logged-in-true">
                     <li className="hello-user">
                       <Link
-                        to="/user/mypage"
+                        to="/my-wish-list"
                         onClick={() => {
                           setIsBurgerClicked(false);
                           setIsMenuVisible(false);
@@ -249,17 +249,7 @@ function Topbar({
                         </Link>
                       </li>
                     )}
-                    <li className="wishlist-btn">
-                      <Link
-                        to="/my-wish-list"
-                        onClick={() => {
-                          setIsBurgerClicked(false);
-                          setIsMenuVisible(false);
-                        }}
-                      >
-                        Wish List
-                      </Link>
-                    </li>
+
                     <li>
                       <Link
                         to="/inquiry"
@@ -380,7 +370,7 @@ function Topbar({
                 </Link>
               </li>
               <li className="hello-user">
-                <Link to="/user/mypage">
+                <Link to="/user/mypage/my-wish-list">
                   <span>
                     {profileData && profileData.nickname
                       ? `Hello, ${profileData.nickname}!`
@@ -394,12 +384,16 @@ function Topbar({
                       <Link to="/admin">Admin Page</Link>
                     </li>
                   )}
-                  <li className="mypage-btn">
-                    <Link to="/user/mypage">My Page</Link>
+                  <li className="my-page-btn">
+                    <Link to="/user/mypage/payment-history">Payments</Link>
                   </li>
-                  <li className="wishlist-btn">
-                    <Link to="/user/mypage/my-wish-list">Wish List</Link>
+                  <li className="my-page-btn">
+                    <Link to="/user/mypage/my-review">Reviews</Link>
                   </li>
+                  <li className="my-page-btn">
+                    <Link to="/user/mypage/address">Address</Link>
+                  </li>
+
                   <li>
                     <Link to="/inquiry">Q&A</Link>
                   </li>

@@ -1,5 +1,15 @@
+:root {
+  --profile-background-color: rgb(0, 0, 0);
+  --profile-text-color: rgb(255, 255, 255);
+  --secondary-text-color: rgb(150, 150, 150);
+  --border-color: rgb(210, 210, 210);
+  --button-bg-color: rgb(255, 255, 255);
+  --button-text-color: rgb(34, 34, 34);
+  --image-bg-color: rgb(210, 210, 210);
+}
+
 .my-profile-page {
-  width: 70%;
+  width: 100%;
   height: 100%;
 
   display: flex;
@@ -7,26 +17,33 @@
   justify-content: center;
   align-items: center;
 
-  margin-top: 30px;
+  /* background-color: rgb(243, 243, 243); */
+  background-color: var(--profile-background-color);
+
+  padding: 10px;
 }
 
 .my-profile-page-title {
-  width: 100%;
-  height: 70px;
+  width: 68%;
+  height: 35px;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 5px;
+
+  color: var(--profile-text-color);
 }
 
 .my-profile-page-title > span {
-  font-size: 25px;
+  font-size: 20px;
   font-weight: bold;
 }
 
 .short-my-profile {
   width: 100%;
   height: 100%;
+  max-height: 150px;
 
   display: flex;
   justify-content: center;
@@ -34,56 +51,53 @@
 }
 
 .profile-container {
-  width: 100%;
-  height: 100%;
   min-width: 400px;
-  max-width: 500px;
+  width: 68%;
+  max-width: 850px;
+  height: 100%;
 
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  flex-direction: column;
-
-  border-radius: 20px;
-
-  /* Shadow properties */
-  box-shadow: -1px -1px 1px rgba(218, 216, 216, 0.5),
-    20px 20px 20px rgba(199, 198, 198, 0.7);
+  flex-direction: row;
 }
 
 .profile-image-container {
-  width: 100%;
-  height: 350px;
+  width: 170px;
+  height: 150px;
 
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
 
   border-radius: 5px;
 }
 
-.profile-image-container img {
-  width: 300px;
-  height: 300px;
-
-  object-fit: cover;
-  border-radius: 50%;
-
-  padding: 5px;
-  margin-top: 20px;
-
-  border-color: #cbd5e0; /* equivalent to border-gray-400 */
-}
-
 .name-joined-container {
-  width: 360px;
-  height: 400px;
+  min-width: 210px;
+  max-width: 300px;
+
+  height: 100%;
+  max-height: 150px;
+
   display: flex;
   flex-flow: column;
   justify-content: space-between;
   align-items: flex-start;
 
-  padding: 20px;
+  padding: 10px;
+}
+
+.profile-image-container img {
+  width: 150px;
+  height: 150px;
+
+  object-fit: cover;
+  border-radius: 50%;
+
+  padding: 5px;
+
+  border-color: #cbd5e0; /* equivalent to border-gray-400 */
 }
 
 .user-joined-date-info {
@@ -96,20 +110,46 @@
 }
 
 /* 프로필 정보 시작 */
-.profile-font-size-and-weight {
-  font-size: 18px;
+.larze-font-size-and-weight {
+  max-width: 270px;
+
+  font-size: 36px;
   font-weight: bold;
+
+  overflow-x: auto; /* 가로 스크롤 활성화 */
+  white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
+}
+
+.middle-font-size-and-weight {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.small-font-size-and-weight {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.ml-5 {
+  margin-left: 5px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.ml-5 > a {
+  color: var(--profile-text-color);
 }
 
 .profile-info-container {
   width: 100%;
-  height: 50px;
+  height: 100%;
+  min-height: 40px;
 
   display: flex;
   justify-content: center;
   align-items: center;
-
-  /* margin-bottom: 20px; */
 }
 
 .profile-navi-page {
@@ -129,14 +169,14 @@
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-end;
   /* border-top: 1px solid rgb(210, 210, 210); */
-  border-bottom: 1px solid rgb(210, 210, 210);
+  /* border-bottom: 1px solid rgb(210, 210, 210); */
 }
 
 .profile-info > span {
-  font-size: 16px;
+  color: var(--profile-text-color);
 }
 
 .profile-info > button {
@@ -149,6 +189,57 @@
   background-color: rgb(255, 255, 255);
 }
 /* 프로필 정보 끝 */
+
+/* 마이 페이지 각 링크에 대한 페이지 이동 */
+.my-page-links-list-container {
+  min-width: 300px;
+  width: 50%;
+  max-width: 375px;
+  max-height: 150px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  padding-left: 50px;
+}
+
+@media (max-width: 700px) {
+  .my-page-links-list-container {
+    display: none;
+  }
+}
+
+.my-page-links-card {
+  width: 25%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.my-page-link {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.my-page-link > img {
+  width: 45px;
+  height: 45px;
+
+  margin-bottom: 5px;
+}
+
+.my-page-link > span {
+  height: 20px;
+  color: white;
+}
 
 .short-payment-history,
 .short-wish-list,
