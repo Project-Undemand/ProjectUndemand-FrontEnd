@@ -97,8 +97,6 @@ const Signup = ({ isLoggedin, memberId }) => {
           withCredentials: true,
         }
       );
-      const data = response;
-      console.log(data);
 
       if (parseInt(response.status) === 201) {
         // Redirect to login.html
@@ -107,9 +105,9 @@ const Signup = ({ isLoggedin, memberId }) => {
         setTimeout(() => {
           swal({
             title:
-              "회원가입을 환영합니다 ^^ 가입하신 이메일로 인증해주시고, 로그인 해주세요.",
+              "회원가입을 환영합니다. 가입하신 이메일로 인증 후, 로그인 해주세요.",
           });
-        }, 1000);
+        }, 100);
       }
       // response.status 가 201 이 아닌 상황에서의 예외처리도 생각 해야합니다.
     } catch (error) {

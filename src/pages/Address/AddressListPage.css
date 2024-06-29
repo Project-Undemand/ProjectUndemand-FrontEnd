@@ -45,6 +45,7 @@
 /* Address Container */
 .my-address-list-container {
   width: 70%;
+  max-width: 1100px;
 
   display: flex;
   justify-content: center;
@@ -80,11 +81,18 @@
   display: flex;
   align-items: center;
 
-  min-height: 64.05px;
   height: 90%;
-  max-height: 71px;
+  max-height: 64.05px;
 
-  overflow-y: auto; /* y 축 스크롤 추가 */
+  max-width: 530px; /* 최대 너비를 500px로 설정 */
+  overflow-x: auto; /* x축 스크롤 추가 */
+}
+
+.table-cell-content > span {
+  display: block; /* span을 블록으로 변환 */
+  max-width: 530px; /* 최대 너비를 500px로 설정 */
+  height: 25px; /* 높이를 25px로 설정 */
+  overflow-x: auto; /* x축 스크롤 추가 */
 }
 
 .ec-base-table th,

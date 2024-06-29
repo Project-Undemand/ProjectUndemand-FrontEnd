@@ -135,9 +135,6 @@ function MyPage({
           withCredentials: true,
         }
       );
-
-      console.log(response.data);
-
       dispatch(setMyReviewList(response.data)); // Redux 액션 디스패치
     } catch (error) {
       console.error(error.response.data);
