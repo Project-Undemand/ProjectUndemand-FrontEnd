@@ -1,16 +1,23 @@
 import React, { useState, useRef } from "react";
+import { useDispatch } from "react-redux";
+
 import axios from "axios";
 import swal from "sweetalert";
 import { FaRegStar, FaStar } from "react-icons/fa6";
 import { adjustImageSize } from "../ReactImageCropper/ImageUtil.jsx";
+import { fetchPaymentHistory } from "../../pages/MyPage/MyPageApiUtils.jsx";
 
 function ReviewModal({
+  memberId,
   isOpen,
   onClose,
   orderId,
   orderGroup,
-  fetchPaymentHistory,
+  setLocalOrderGroup,
+  setProductInventory,
 }) {
+  const dispatch = useDispatch();
+
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [paymentId, setPaymentId] = useState(null);
   const [rating, setRating] = useState(0);
@@ -88,7 +95,12 @@ function ReviewModal({
       );
       swal("리뷰가 성공적으로 작성되었습니다.");
       onClose();
-      fetchPaymentHistory(); // 구매 후기를 작성한 후 결제 내역을 다시 불러옵니다.
+      fetchPaymentHistory(
+        dispatch,
+        memberId,
+        setLocalOrderGroup,
+        setProductInventory
+      ); // 구매 후기를 작성한 후 결제 내역을 다시 불러옵니다.
     } catch (error) {
       console.error("리뷰 작성 중 오류가 발생했습니다:", error);
       swal("리뷰 작성 중 오류가 발생했습니다.");

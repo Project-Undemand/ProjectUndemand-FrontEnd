@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import axios from "axios";
-import swal from "sweetalert";
 // CSS
 import "./MyPaymentHistoryPage.css";
 import "../../components/ReviewModal/ReviewModal.css";
-import { setOrderGroup } from "../../store";
 
 import { handleCartSubmit, handleAddAllToCart } from "../CartPage/CartUtil.jsx";
 import { ReviewModal } from "../../components/ReviewModal/ReviewModal.jsx";
@@ -22,6 +19,8 @@ function MyPaymentHistoryPage({
   setCartProducts,
   orderGroup,
   productInventory,
+  setLocalOrderGroup,
+  setProductInventory,
 }) {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const ReviewTitleImage =
@@ -192,11 +191,13 @@ function MyPaymentHistoryPage({
                     </button>
                   </div>
                   <ReviewModal
+                    memberId={memberId}
                     isOpen={isReviewModalOpen[orderId]}
                     onClose={() => closeReviewModal(orderId)}
                     orderId={orderId}
                     orderGroup={orderGroup}
-                    fetchPaymentHistory={fetchPaymentHistory}
+                    setLocalOrderGroup={setLocalOrderGroup}
+                    setProductInventory={setProductInventory}
                   />
                 </div>
               </div>

@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import axios from "axios";
 // CSS
 import "./MyWishListPage.css";
 import WishBtn from "../../components/WishBtn/WishBtn.jsx";

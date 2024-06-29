@@ -8,7 +8,7 @@ import swal from "sweetalert";
 import "./AddressListPage.css";
 import "./AddressRegistrationPage.css";
 import { MyProfilePage } from "../MyProfilePage/MyProfilePage.jsx";
-import { fetchAddressLists } from "../MyPage/MyPage.jsx";
+import { fetchAddressLists } from "../MyPage/MyPageApiUtils.jsx";
 
 function AddressListPage({
   isLoggedin,
