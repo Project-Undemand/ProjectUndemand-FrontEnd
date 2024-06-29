@@ -362,7 +362,7 @@
     flex-flow: column;
     justify-content: flex-start;
     align-items: flex-start;
-    margin-bottom: 50px;
+    margin-bottom: 60px;
 }
 
 .rating-and-write-info {
@@ -381,8 +381,10 @@
 }
 
 .detail-page-review-img {
-    width: 120px;
-    height: 120px;
+    width: 90px;
+    height: 90px;
+    border: 1px solid rgb(34, 34, 34);
+    border-radius: 8px;
     object-fit: cover;
     object-position: center;
     margin-top: 10px;

@@ -16,7 +16,7 @@ function ArticleSubmitModal({
   isLoggedin,
   memberId,
 }) {
-  const [nickName, setNickName] = useState("");
+  const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [writer, setWriter] = useState("");
   const [email, setEmail] = useState("");
@@ -53,7 +53,9 @@ function ArticleSubmitModal({
         }
       );
       swal({
-        title: `"${response.data.writer}" 님의 리뷰를 등록하였습니다.`,
+        title: `"${
+          userName ? userName : response.data.writer
+        }" 님의 리뷰를 등록하였습니다.`,
       }).then(() => {
         modalClose();
       });
@@ -77,7 +79,7 @@ function ArticleSubmitModal({
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_BASE_URL}/members/${memberId}`,
+          `${process.env.REACT_APP_BACKEND_BASE_URL}/profile/${memberId}`,
           {
             headers: {
               Authorization: localStorage.getItem("Authorization"),
@@ -85,14 +87,18 @@ function ArticleSubmitModal({
             withCredentials: true,
           }
         );
-        setNickName(response.data.nickname);
-        setUserEmail(response.data.email);
+        setUserName(response.data.member.username);
+        setUserEmail(response.data.member.email);
       } catch (error) {
         console.error(error.response.data);
       }
     };
 
-    fetchUserData();
+    if (memberId) {
+      fetchUserData();
+    } else {
+      return;
+    }
   }, [memberId]);
 
   const handleInquirySubmit = async () => {
@@ -106,7 +112,7 @@ function ArticleSubmitModal({
     if (isLoggedin) {
       requestData = {
         ...requestData,
-        name: nickName,
+        name: userName,
         email: userEmail,
       };
     } else {
@@ -130,7 +136,9 @@ function ArticleSubmitModal({
       )
       .then((response) => {
         swal({
-          title: `"${writer}" 님의 문의 글을 등록하였습니다.`,
+          title: `"${
+            userName ? userName : writer
+          }" 님의 문의 글을 등록하였습니다.`,
         }).then(() => {
           modalClose();
         });
