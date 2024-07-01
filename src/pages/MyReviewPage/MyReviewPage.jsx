@@ -51,7 +51,12 @@ function MyReviewPage({ isLoggedin, memberId, profileData, profileImageUrl }) {
   }, [myReviewList]);
 
   useEffect(() => {
+    console.log(myReviewList);
     const checkImages = async () => {
+      if (!Array.isArray(myReviewList)) {
+        return;
+      }
+
       const updatedReviewData = await Promise.all(
         myReviewList.map(async (review) => {
           const updatedImgPaths = await Promise.all(

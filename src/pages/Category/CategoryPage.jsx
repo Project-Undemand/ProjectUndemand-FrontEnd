@@ -26,6 +26,7 @@ function CategoryPage({
   profileImageUrl,
   cartProducts,
 }) {
+  const memberRole = localStorage.getItem("memberRole");
   const { condition } = useParams();
   const [urlCondition, setUrlCondition] = useState(condition.split("-")[0]);
 
@@ -353,11 +354,13 @@ function CategoryPage({
                   <img src={profileImageUrl} alt="Profile img" />
                 </Link>
                 <ul className="user-dropdown-menu">
-                  <li className="mypage-btn">
-                    <Link to="/user/mypage">My Page</Link>
-                  </li>
-                  <li className="wishlist-btn">
-                    <Link to="/wishlist">Wish List</Link>
+                  {memberRole === "ADMIN" && (
+                    <li className="admin-page-btn">
+                      <Link to="/admin">Admin Page</Link>
+                    </li>
+                  )}
+                  <li className="my-page-btn">
+                    <Link to="/user/mypage/my-wish-list">My Page</Link>
                   </li>
                   <li>
                     <Link to="/inquiry">Q&A</Link>

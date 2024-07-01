@@ -109,7 +109,8 @@ function AddressRegistrationPage({ isLoggedin, memberId }) {
       navigate("/user/mypage/address");
     } catch (error) {
       console.error("Error creating address:", error);
-      Swal.fire({
+
+      swal({
         icon: "error",
         title: "주소 생성 실패",
         text: "주소 생성 중 오류가 발생했습니다. 다시 시도해주세요.",
@@ -300,16 +301,16 @@ function AddressRegistrationPage({ isLoggedin, memberId }) {
           <Link to="/user/mypage/address">취소</Link>
         </div>
       </form>
-      <div class="ec-base-help">
+      <div className="ec-base-help">
         <h3>배송주소록 유의사항</h3>
-        <div class="inner">
+        <div className="inner">
           <ol>
-            <li class="item1">
+            <li className="item1">
               배송 주소록은 최대 10개까지 등록할 수 있으며, 별도로 등록하지 않을
               경우 최근 배송 주소록 기준으로 자동 업데이트 됩니다.
             </li>
-            <li class="item2"></li>
-            <li class="item3">
+            <li className="item2"></li>
+            <li className="item3">
               기본 배송지는 1개만 저장됩니다. 다른 배송지를 기본 배송지로
               설정하시면 기본 배송지가 변경됩니다.
             </li>

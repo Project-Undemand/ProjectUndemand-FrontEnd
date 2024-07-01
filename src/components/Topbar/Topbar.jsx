@@ -66,7 +66,7 @@ function Topbar({
       setMemberId("");
       setMemberRole("");
     }
-  }, []);
+  }, [isLoggedin]);
 
   const handleMouseOver = (index) => {
     setHoveredLinkIndex(index);
@@ -385,15 +385,8 @@ function Topbar({
                     </li>
                   )}
                   <li className="my-page-btn">
-                    <Link to="/user/mypage/payment-history">Payments</Link>
+                    <Link to="/user/mypage/my-wish-list">My Page</Link>
                   </li>
-                  <li className="my-page-btn">
-                    <Link to="/user/mypage/my-review">Reviews</Link>
-                  </li>
-                  <li className="my-page-btn">
-                    <Link to="/user/mypage/address">Address</Link>
-                  </li>
-
                   <li>
                     <Link to="/inquiry">Q&A</Link>
                   </li>
