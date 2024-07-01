@@ -6,13 +6,13 @@ const SnsSignInUrl = ({ type, isLoggedin, setIsLoggedin }) => {
 
     switch (type) {
       case "Naver":
-        AUTH_URL = "http://localhost:8080/oauth2/authorization/naver";
+        AUTH_URL = `${process.env.REACT_APP_BACKEND_URL_FOR_IMG}/oauth2/authorization/naver`;
         break;
       case "Kakao":
-        AUTH_URL = "http://localhost:8080/oauth2/authorization/kakao";
+        AUTH_URL = `${process.env.REACT_APP_BACKEND_URL_FOR_IMG}/oauth2/authorization/kakao`;
         break;
       case "Google":
-        AUTH_URL = "http://localhost:8080/oauth2/authorization/google";
+        AUTH_URL = `${process.env.REACT_APP_BACKEND_URL_FOR_IMG}/oauth2/authorization/google`;
         break;
       default:
         AUTH_URL = "";
