@@ -222,7 +222,7 @@ function Topbar({
                   <ul className="user-btn-box logged-in-true">
                     <li className="hello-user">
                       <Link
-                        to="/my-wish-list"
+                        to="/user/mypage/my-wish-list"
                         onClick={() => {
                           setIsBurgerClicked(false);
                           setIsMenuVisible(false);
@@ -249,7 +249,9 @@ function Topbar({
                         </Link>
                       </li>
                     )}
-
+                    <li className="my-page-btn">
+                      <Link to="/user/mypage/my-wish-list">My Page</Link>
+                    </li>
                     <li>
                       <Link
                         to="/inquiry"
