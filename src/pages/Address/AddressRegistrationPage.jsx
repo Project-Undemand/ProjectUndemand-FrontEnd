@@ -5,6 +5,7 @@ import swal from "sweetalert";
 // CSS
 import "./AddressListPage.css";
 import "./AddressRegistrationPage.css";
+import { fetchAddressLists } from "../MyPage/MyPageApiUtils";
 // reeact-daum-postcode
 import DaumPostcode from "react-daum-postcode";
 
@@ -94,7 +95,6 @@ function AddressRegistrationPage({ isLoggedin, memberId }) {
         ...addressData,
         isDefaultAddress: isDefaultAddressRef.current,
       };
-      console.log(updatedAddressData); // 전송 전 updatedAddressData 확인
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_BASE_URL}/address/${memberId}`,
         updatedAddressData,
@@ -106,6 +106,7 @@ function AddressRegistrationPage({ isLoggedin, memberId }) {
         }
       );
       console.log("Address created:", response.data);
+      fetchAddressLists(dispatch, memberId); // 주소 목록 다시 불러오기
       navigate("/user/mypage/address");
     } catch (error) {
       console.error("Error creating address:", error);
