@@ -101,7 +101,7 @@ function Topbar({
 
       setTimeout(() => {
         window.location.replace("/login");
-      }, 1000);
+      }, 500);
     } catch (error) {
       console.error("로그아웃 요청 중 오류가 발생했습니다:", error);
 
