@@ -111,12 +111,31 @@ const Signup = ({ isLoggedin, memberId }) => {
       }
       // response.status 가 201 이 아닌 상황에서의 예외처리도 생각 해야합니다.
     } catch (error) {
-      console.error("회원 가입 실패 : ", error.response.data);
-      // 클라이언트에게 경고 메세지를 띄워주는 자바스크립트 코드
-      var message = " 은 이미 가입된 이메일입니다. \n 로그인 해주세요. ";
-      swal({
-        title: email + message,
-      });
+      if (error.response) {
+        if (error.response.status === 400) {
+          swal({
+            title: "잘못된 요청입니다. 입력하신 정보를 다시 확인해주세요.",
+          });
+        } else if (error.response.status === 409) {
+          swal({
+            title: "이미 존재하는 이메일입니다. 다른 이메일을 사용해주세요.",
+          });
+        } else if (error.response.status === 500) {
+          swal({
+            title: "서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
+          });
+        } else {
+          swal({
+            title: "회원가입에 실패했습니다. 다시 시도해주세요.",
+          });
+        }
+        console.error("회원 가입 실패 : ", error.response.data);
+      } else {
+        swal({
+          title: "네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.",
+        });
+        console.error("회원 가입 실패 : ", error);
+      }
     }
   };
 

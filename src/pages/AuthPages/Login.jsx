@@ -50,7 +50,6 @@ const Login = ({ isLoggedin, setIsLoggedin }) => {
       );
 
       const newAccessToken = response.data.accessToken;
-      //   const newRefreshToken = response.data.refreshToken;
 
       if (parseInt(response.status) === 200) {
         // 로컬스토리지에 memberId ,memberRole ,Authorization 을 저장
@@ -71,10 +70,30 @@ const Login = ({ isLoggedin, setIsLoggedin }) => {
         }, 200);
       }
     } catch (error) {
-      swal({
-        title: "가입되지 않은 이메일 이거나, 이메일이 인증 되지 않았습니다.",
-      });
-      console.error("로그인 실패 : ", error.response);
+      if (error.response) {
+        if (error.response.status === 500) {
+          swal({
+            title: "서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
+          });
+        } else if (
+          error.response.status === 400 ||
+          error.response.status === 401
+        ) {
+          swal({
+            title: "가입되지 않은 이메일 이거나, 이메일이 인증되지 않았습니다.",
+          });
+        } else {
+          swal({
+            title: "로그인에 실패했습니다. 다시 시도해주세요.",
+          });
+        }
+        console.error("로그인 실패: ", error.response);
+      } else {
+        swal({
+          title: "네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.",
+        });
+        console.error("로그인 실패: ", error);
+      }
     }
   };
 
