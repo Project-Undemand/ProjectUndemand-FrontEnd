@@ -28,6 +28,7 @@ import { CartPage } from "./pages/CartPage/CartPage.jsx";
 import { PaymentPage } from "./pages/PaymentPage/PaymentPage.jsx";
 import { ReceiptPage } from "./pages/ReceiptPage/ReceiptPage.jsx";
 import { AdministratorPage } from "./pages/AdministratorPage/AdministratorPage.jsx";
+import { MemberAdminMainPage } from "./pages/AdministratorPage/MemberAdministratorPage/MemberAdminMainPage.jsx";
 import { MyPage } from "./pages/MyPage/MyPage.jsx";
 import { MyReviewPage } from "./pages/MyReviewPage/MyReviewPage.jsx";
 // 기타
@@ -431,6 +432,17 @@ function App() {
             <Route path="/cart/order/done" element={<ReceiptPage />} />
             <Route element={<AdminRoutes memberRole={memberRole} />}>
               <Route path="/admin/*" element={<AdministratorPage />} />
+            </Route>
+            <Route element={<AdminRoutes memberRole={memberRole} />}>
+              <Route
+                path="/admin/members/*"
+                element={
+                  <MemberAdminMainPage
+                    profileData={profileData}
+                    profileImageUrl={profileImageUrl}
+                  />
+                }
+              />
             </Route>
           </Route>
         </Routes>
