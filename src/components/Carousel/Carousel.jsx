@@ -110,22 +110,25 @@ const Carousel = () => {
                   >
                     {newArr.productType}
                   </span> */}
-                  {newArr.isDiscount === true && (
-                    <span
-                      className="carousel-text-pd-discount"
-                      onClick={() => navigate(`/product/${newArr.productId}`)}
-                    >
-                      {`${newArr.discountRate}% 할인 중`}
-                    </span>
-                  )}
-                  {newArr.isRecommend === true && (
-                    <span
-                      className="carousel-text-pd-recommend"
-                      onClick={() => navigate(`/product/${newArr.productId}`)}
-                    >
-                      추천 상품!
-                    </span>
-                  )}
+                  <div>
+                    {newArr.isDiscount === true && (
+                      <span
+                        className="carousel-text-pd-discount"
+                        onClick={() => navigate(`/product/${newArr.productId}`)}
+                      >
+                        할인 상품!
+                      </span>
+                    )}
+                    {newArr.isRecommend === true && (
+                      <span
+                        className="carousel-text-pd-recommend"
+                        onClick={() => navigate(`/product/${newArr.productId}`)}
+                      >
+                        추천 상품!
+                      </span>
+                    )}
+                  </div>
+
                   <span
                     className="carousel-text-pd-name"
                     onClick={() => navigate(`/product/${newArr.productId}`)}

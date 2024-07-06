@@ -93,27 +93,22 @@ function ProductSlide({ loading, products, sectionTitle }) {
                         className={`product-card-img`}
                       />
                       <div className="product-small-info">
-                        <div className="pd-name-discount-recommend-wrapper">
+                        <div className="pd-name-wrapper pd-name-discount-recommend-wrapper  ">
                           <Link to={`/product/${product.productId}`}>
                             {product.productName}
                           </Link>
-                          {product.isDiscount === true && (
-                            <Link
-                              to={`/product/${product.productId}`}
-                            >{`${product.discountRate}% 할인 중`}</Link>
-                          )}
+                        </div>
+                        {/* color: rgb(222, 189, 255);    font-size: 18px; */}
+                        <div className="pd-recommend-price-wrapper">
                           {product.isRecommend === true && (
                             <Link to={`/product/${product.productId}`}>
                               추천상품!
                             </Link>
                           )}
+                          <Link to={`/product/${product.productId}`}>
+                            {`${product.price} 원`}
+                          </Link>
                         </div>
-                        <Link
-                          to={`/product/${product.productId}`}
-                          className="product-price"
-                        >
-                          {`${product.price} 원`}
-                        </Link>
                       </div>
                     </div>
                   </SwiperSlide>
