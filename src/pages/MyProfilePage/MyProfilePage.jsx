@@ -5,12 +5,13 @@ import { useSelector } from "react-redux";
 import "./MyProfilePage.css";
 
 function MyProfilePage({ isLoggedin, memberId, profileData, profileImageUrl }) {
-  const email = profileData?.member?.email || "없음";
-  const username = profileData?.member?.username || "없음";
-  const nickname = profileData?.member?.nickname || "없음";
-  const memberAges = profileData?.memberAges || "없음";
-  const memberGender = profileData?.memberGender || "없음";
-  const joinedAt = profileData?.member?.joined_at.substring(0, 10) || "없음";
+  const email = profileData?.member?.email || "이메일";
+  const username = profileData?.member?.username || "이름";
+  const nickname = profileData?.member?.nickname || "닉네임";
+  const memberAges = profileData?.memberAges || "성별";
+  const memberGender = profileData?.memberGender || "연령대";
+  const joinedAt =
+    profileData?.member?.joined_at.substring(0, 10) || "가입날짜";
   const memberRole =
     profileData?.member?.member_role === "ADMIN"
       ? "관리자 멤버"
