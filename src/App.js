@@ -128,7 +128,7 @@ function App() {
     ChannelTalk.setAppearance("system");
   };
 
-  // 소셜 로그인 했을 때, 프로필 데이터와 이미지 다시 가져오기
+  // 로그인 했을 때, 프로필 데이터와 이미지 다시 가져오기
   useEffect(() => {
     const fetchData = async () => {
       if (memberId) {
@@ -137,6 +137,7 @@ function App() {
           dispatch(fetchProfile(memberId)),
           dispatch(fetchProfileImage(memberId)),
         ]);
+        fetchCategoryData();
       }
     };
 
@@ -165,11 +166,31 @@ function App() {
     }
   }, [memberId]);
 
+  const fetchCategoryData = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_BASE_URL}/categorys`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("Authorization"),
+          },
+          withCredentials: true,
+        }
+      );
+      setCategoryData(response.data);
+      localStorage.setItem("Categoryfetched", "true");
+    } catch (error) {
+      console.error("Error fetching category data:", error);
+    }
+  };
+
   const initializeAuth = () => {
     const accessToken = localStorage.getItem("Authorization");
-    if (accessToken) {
+    const memberId = localStorage.getItem("memberId");
+    if (accessToken && memberId) {
+      // 로그인 상태와 회원 PK가 존재하는지 확인
       setIsLoggedin(true);
-      setMemberId(localStorage.getItem("memberId"));
+      setMemberId(memberId);
       setMemberRole(localStorage.getItem("memberRole"));
     } else {
       setIsLoggedin(false);
@@ -183,26 +204,10 @@ function App() {
     channelTalkLoad();
   }, []);
 
+  // 카테고리 데이터가 호출된 이후에, 1시간 간격으로 인터벌 호출
   useEffect(() => {
-    const fetchCategoryData = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_BASE_URL}/categorys`,
-          {
-            headers: {
-              Authorization: localStorage.getItem("Authorization"),
-            },
-            withCredentials: true,
-          }
-        );
-        setCategoryData(response.data);
-        localStorage.setItem("Categoryfetched", "true");
-      } catch (error) {
-        console.error("Error fetching category data:", error);
-      }
-    };
     // 카테고리 데이터 Fetching 이 , 너무 많이 서버에 요청하고 있어서, 로컬스토리지를 통한 캐싱을 추가하였습니다 [24.07.07]
-    const isCategoryDataFetched = localStorage.getItem("Categoryfetched");
+    let isCategoryDataFetched = localStorage.getItem("Categoryfetched");
 
     if (isCategoryDataFetched === null) {
       localStorage.setItem("Categoryfetched", "false");
@@ -215,10 +220,9 @@ function App() {
 
       // 컴포넌트가 언마운트될 때 인터벌 정리
       return () => clearInterval(intervalId);
-    } else {
-      // 최초 데이터 로드
-      fetchCategoryData();
     }
+    // 최초 데이터 로드
+    fetchCategoryData();
   }, []);
 
   const processedCategoryData = categoryData.map((parentCategory) => {
