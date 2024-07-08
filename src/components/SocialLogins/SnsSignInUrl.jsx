@@ -17,9 +17,9 @@ const SnsSignInUrl = ({ type, isLoggedin, setIsLoggedin }) => {
       default:
         AUTH_URL = "";
     }
-    console.log("isLoggedin. SnsSignInUrl");
-
+    console.log("isLoggedin : " + isLoggedin);
     window.location.href = AUTH_URL;
+    setIsLoggedin(true);
   };
 
   return (

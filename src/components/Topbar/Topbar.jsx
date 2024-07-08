@@ -97,11 +97,12 @@ function Topbar({
       localStorage.removeItem("Authorization");
       localStorage.removeItem("memberId");
       localStorage.removeItem("memberRole");
+      localStorage.setItem("Categoryfetched", "false");
       console.log("로그아웃 완료.");
 
       setTimeout(() => {
         window.location.replace("/login");
-      }, 500);
+      }, 100);
     } catch (error) {
       console.error("로그아웃 요청 중 오류가 발생했습니다:", error);
 
@@ -139,7 +140,7 @@ function Topbar({
 
       setTimeout(() => {
         window.location.replace("/login");
-      }, 2000);
+      }, 1000);
     }
   };
 

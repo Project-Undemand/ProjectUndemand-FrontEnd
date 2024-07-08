@@ -410,6 +410,7 @@ function App() {
             element={
               <CategoryPage
                 isLoggedin={isLoggedin}
+                setIsLoggedin={setIsLoggedin}
                 filterOptions={processedCategoryData}
                 menUnisexFilterOptions={processedMUCategoryData}
                 selectedCategoryOption={selectedCategoryOption}
