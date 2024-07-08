@@ -22,11 +22,13 @@ function MyReviewPage({ isLoggedin, memberId, profileData, profileImageUrl }) {
   const defaultImageURL =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTRx9zMfm7p_YRHoXXLVhaI2YpE4bMGgwnyg&s";
 
-  const myReviewList = useSelector((state) => state.myReviewList);
+  const myReviewList = useSelector((state) => state.myReviewList) || [];
   const reviewCount = Object.keys(myReviewList).length;
 
   useEffect(() => {
     const fetchThumbnail = async () => {
+      if (!Array.isArray(myReviewList) || myReviewList.length === 0) return;
+
       try {
         const thumbnailPromises = myReviewList.map(async (userReview) => {
           const response = await axios.get(
