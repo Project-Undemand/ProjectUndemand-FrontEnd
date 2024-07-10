@@ -29,33 +29,40 @@ function MyWishListPage({
         </div>
       </div>
       <div className="my-wish-list-container">
-        {wishLists.map((wishItem) => (
-          <div key={wishItem.wishListId} className="my-wish-product-card">
-            <Link to={`/product/${wishItem.productId}`}>
-              <img
-                src={`${process.env.REACT_APP_BACKEND_URL_FOR_IMG}${wishItem.productThumbnails[0]}`}
-                alt={wishItem.productName}
-                className="wish-product-image"
-              />
-            </Link>
-            <div className="my-wish-product-info">
-              <div className="pd-name-type">
-                <WishBtn
-                  memberId={memberId}
-                  productId={wishItem.productId}
-                  isLoggedin={isLoggedin}
-                  pageType={"profileWishList"}
+        {wishLists && wishLists.length > 0 ? (
+          wishLists.map((wishItem) => (
+            <div key={wishItem.wishListId} className="my-wish-product-card">
+              <Link to={`/product/${wishItem.productId}`}>
+                <img
+                  src={`${process.env.REACT_APP_BACKEND_URL_FOR_IMG}${wishItem.productThumbnails[0]}`}
+                  alt={wishItem.productName}
+                  className="wish-product-image"
                 />
-                <span>
-                  {wishItem.productName}, {wishItem.productType}
-                </span>
-              </div>
-              <div className="pd-price">
-                <span>{`${wishItem.price} 원`}</span>
+              </Link>
+              <div className="my-wish-product-info">
+                <div className="pd-name-type">
+                  <WishBtn
+                    memberId={memberId}
+                    productId={wishItem.productId}
+                    isLoggedin={isLoggedin}
+                    pageType={"profileWishList"}
+                  />
+                  <span>
+                    {wishItem.productName}, {wishItem.productType}
+                  </span>
+                </div>
+                <div className="pd-price">
+                  <span>{`${wishItem.price} 원`}</span>
+                </div>
               </div>
             </div>
+          ))
+        ) : (
+          <div>
+            마음에 드는 상품에 찜하기를 해보세요. 나의 찜목록에서 모아보실 수
+            있답니다.
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

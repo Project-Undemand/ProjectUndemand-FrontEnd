@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import swal from "sweetalert";
 // CSS
@@ -10,6 +11,9 @@ import { fetchAddressLists } from "../MyPage/MyPageApiUtils";
 import DaumPostcode from "react-daum-postcode";
 
 function AddressRegistrationPage({ isLoggedin, memberId }) {
+  const navigate = useNavigate(); // 페이지 이동을 위한 네비게이트 훅
+  const dispatch = useDispatch(); // Redux 디스패치 훅
+
   const [isOpen, setIsOpen] = useState(false);
   const isDefaultAddressRef = useRef(false); // useRef로 기본 주소 체크박스 상태 관리
   const [defaultAddressState, setDefaultAddressState] = useState(false); // useState로 체크박스 상태 관리
@@ -39,8 +43,6 @@ function AddressRegistrationPage({ isLoggedin, memberId }) {
     height: "480px",
   };
 
-  const navigate = useNavigate();
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === "checkbox" ? checked : value;
@@ -60,7 +62,7 @@ function AddressRegistrationPage({ isLoggedin, memberId }) {
         }`;
       }
 
-      console.log(`${name} updated to ${newValue}`);
+      //   console.log(`${name} updated to ${newValue}`);
       return updatedState;
     });
     if (name === "isDefaultAddress") {

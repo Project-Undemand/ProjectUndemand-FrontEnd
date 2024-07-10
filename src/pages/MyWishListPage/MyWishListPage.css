@@ -1,5 +1,6 @@
 .my-wish-list-page {
   width: 100%;
+
   display: flex;
   flex-flow: column;
   justify-content: flex-start;
@@ -26,7 +27,7 @@
 
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
 
   margin-top: 10px;
