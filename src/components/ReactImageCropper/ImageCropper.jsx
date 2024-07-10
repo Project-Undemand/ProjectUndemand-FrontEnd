@@ -251,7 +251,7 @@ const ImageCropper = ({
               ref={imgRef}
               src={imgSrc}
               alt="Upload"
-              style={{ maxHeight: "70vh" }}
+              style={{ maxHeight: "58vh" }}
               onLoad={onImageLoad}
             />
           </ReactCrop>

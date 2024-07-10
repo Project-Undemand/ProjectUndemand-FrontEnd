@@ -222,7 +222,7 @@ function MyReviewPage({ isLoggedin, memberId, profileData, profileImageUrl }) {
               </div>
               <div className="review-edit-del-container">
                 <div className="review-date">
-                  <span>마지막 수정일:</span>
+                  <span>마지막 수정일 :</span>
                   {tableRow.updatedAt.substring(0, 10)}
                 </div>
                 <div className="review-edit-del">
