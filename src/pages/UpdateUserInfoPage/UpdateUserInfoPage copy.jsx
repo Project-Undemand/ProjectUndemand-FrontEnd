@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 // Component
@@ -20,16 +20,15 @@ const UpdateUserInfoPage = ({
   const [isEditingGender, setIsEditingGender] = useState(false);
   const [isEditingAge, setIsEditingAge] = useState(false);
   const [isEditingNickname, setIsEditingNickname] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const genderRef = useRef(null);
   const ageRef = useRef(null);
   const nicknameRef = useRef(null);
-  const cropRef = useRef(null);
 
   const avatarUrl = useRef(
     "https://avatarfiles.alphacoders.com/161/161002.jpg"
   );
-  const [modalOpen, setModalOpen] = useState(false);
 
   const dispatch = useDispatch(); // 리덕스 디스패치를 위한 훅
 
@@ -97,28 +96,6 @@ const UpdateUserInfoPage = ({
     }
   };
 
-  const handleEditUsername = () => setIsEditingUsername(true);
-  const handleConfirmUsername = async () => {
-    setIsEditingUsername(false);
-    try {
-      const newUsername = usernameRef.current.value;
-      const url = `${process.env.REACT_APP_BACKEND_BASE_URL}/profile/${memberId}/username`;
-      const headers = {
-        Authorization: localStorage.getItem("Authorization"),
-        "Content-Type": "application/json",
-      };
-
-      await axios.put(url, newUsername, {
-        headers,
-        withCredentials: true,
-      });
-      dispatch(fetchProfile(memberId));
-      console.log("Nickname Put Seccess");
-    } catch (error) {
-      console.error("Error updating nickname:", error);
-    }
-  };
-
   const email = profileData?.member?.email || "없음";
   const nickname = profileData?.member?.nickname || "없음";
   const memberAges = profileData?.memberAges || "없음";
@@ -131,9 +108,6 @@ const UpdateUserInfoPage = ({
       </div>
       <div className="update-user-info-page">
         <div className="user-info-input-container">
-          <div className="update-user-info-sub-title">
-            <span>회원 정보</span>
-          </div>
           <div className="profile-image-modal-container">
             <div className="profile-image-wrapper">
               <img
@@ -160,116 +134,33 @@ const UpdateUserInfoPage = ({
             )}
           </div>
           <div className="user-info-container">
-            <div className="user-form-group top-border">
-              <div className="user-info-form">
-                <label>
-                  이름 <span className="required">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="username"
-                  required=""
-                  className="addressName-input"
-                  value=""
-                ></input>
-              </div>
-              <div>
-                <button
-                  className="profile-info-edit-btn"
-                  onClick={handleEditUsername}
-                >
-                  수정
-                </button>
-              </div>
-            </div>
-            <div className="user-form-group top-border">
-              <div className="user-info-form">
-                <label>
-                  닉네임 <span className="required">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="nickname"
-                  required=""
-                  className="addressName-input"
-                  value=""
-                ></input>
-              </div>
-              <div>
-                <button
-                  className="profile-info-edit-btn"
-                  onClick={handleEditNickname}
-                >
-                  수정
-                </button>
-              </div>
-            </div>
-            <div className="user-form-group top-border">
-              <div className="user-info-form">
-                <label>
-                  Email <span className="required">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="nickname"
-                  required=""
-                  className="addressName-input"
-                  value=""
-                ></input>
-              </div>
-              <div>
-                <button
-                  className="profile-info-edit-btn"
-                  onClick={handleEditNickname}
-                >
-                  수정
-                </button>
-              </div>
-            </div>
-            <div className="user-form-group top-border">
-              <div className="user-info-form">
-                <label>
-                  권한 <span className="required">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="nickname"
-                  required=""
-                  className="addressName-input"
-                  value=""
-                ></input>
-              </div>
-              <div>
-                <button
-                  className="profile-info-edit-btn"
-                  onClick={handleEditNickname}
-                >
-                  수정
-                </button>
-              </div>
-            </div>
-            <div className="user-form-group top-border">
-              <div className="user-info-form">
-                <label>
-                  역할 <span className="required">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="nickname"
-                  required=""
-                  className="addressName-input"
-                  value=""
-                ></input>
-              </div>
-              <div>
-                <button
-                  className="profile-info-edit-btn"
-                  onClick={handleEditNickname}
-                >
-                  수정
-                </button>
-              </div>
-            </div>
+            <UserDataFormat
+              label="성별"
+              type="text"
+              data={memberGender}
+              onEdit={handleEditGender}
+              onConfirm={handleConfirmGender}
+              isEditing={isEditingGender}
+              ref={genderRef}
+            />
+            <UserDataFormat
+              label="연령대"
+              type="text"
+              data={memberAges}
+              onEdit={handleEditAge}
+              onConfirm={handleConfirmAge}
+              isEditing={isEditingAge}
+              ref={ageRef}
+            />
+            <UserDataFormat
+              label="닉네임"
+              type="text"
+              data={nickname}
+              onEdit={handleEditNickname}
+              onConfirm={handleConfirmNickname}
+              isEditing={isEditingNickname}
+              ref={nicknameRef}
+            />
           </div>
         </div>
         <div className="profile-update-info-container">
