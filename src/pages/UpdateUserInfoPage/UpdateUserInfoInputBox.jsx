@@ -38,7 +38,7 @@ export const UserAgeSelect = React.forwardRef(
     <div className="profile-info-container">
       <div className="profile-checkbox">
         <div className="uii-container">
-          <span>{label}</span>
+          {/* <span>{label}</span> */}
           <select
             className="form-select form-select-sm"
             defaultValue={data}
@@ -64,7 +64,7 @@ export const UserGenderSelect = React.forwardRef(
     <div className="profile-info-container">
       <div className="profile-checkbox">
         <div className="uii-container">
-          <span>{label}</span>
+          {/* <span>{label}</span> */}
           <select
             className="form-select form-select-sm"
             defaultValue={data}

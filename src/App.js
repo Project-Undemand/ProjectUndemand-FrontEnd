@@ -19,7 +19,6 @@ import Footer from "./components/Footer/Footer.jsx";
 import { Main } from "./pages/Main/Main.jsx";
 import { Signup } from "./pages/AuthPages/Signup.jsx";
 import { Login } from "./pages/AuthPages/Login.jsx";
-import { KakaoLoginHandeler } from "./components/SocialLogins/KakaoLoginHandeler.jsx";
 import { CategoryPage } from "./pages/Category/CategoryPage.jsx";
 import { ProductDetailPage } from "./pages/ProductDetailPage/ProductDetailPage.jsx";
 import { InquiryPage } from "./pages/InquiryPage/InquiryPage.jsx";
@@ -387,10 +386,6 @@ function App() {
             element={
               <Login isLoggedin={isLoggedin} setIsLoggedin={setIsLoggedin} />
             }
-          />
-          <Route
-            path="/login/oauth2/code/kakao" //kakao_redirect_url
-            element={<KakaoLoginHandeler />}
           />
           <Route
             path="/user/mypage/*"
