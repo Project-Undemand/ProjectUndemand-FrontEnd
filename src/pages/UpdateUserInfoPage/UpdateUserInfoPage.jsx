@@ -96,6 +96,19 @@ const UpdateUserInfoPage = ({
     }
   };
 
+  const getRoleDescription = (role) => {
+    switch (role) {
+      case "USER":
+        return "일반 회원";
+      case "SELLER":
+        return "판매자 회원";
+      case "ADMIN":
+        return "관리자 회원";
+      default:
+        return "알 수 없는 회원";
+    }
+  };
+
   const introduction = profileData?.introduction || "introduction";
   const email = profileData?.member?.email || "email";
   const role = profileData?.member?.member_role || "role";
@@ -227,7 +240,7 @@ const UpdateUserInfoPage = ({
                 <label>
                   Role <span className="required">*</span>
                 </label>
-                <span>{role}</span>
+                <span>{getRoleDescription(role)}</span>
               </div>
             </div>
           </div>

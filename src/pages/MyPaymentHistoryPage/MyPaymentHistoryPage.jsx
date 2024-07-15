@@ -66,6 +66,8 @@ function MyPaymentHistoryPage({
     }));
   };
 
+  const orderCount = Object.keys(orderGroup).length;
+
   return (
     <div className="my-payment-history-page">
       <MyProfilePage
@@ -77,9 +79,7 @@ function MyPaymentHistoryPage({
       <div className="payhis-page-title-container">
         <div className="payhis-page-title">
           <span>구매 내역</span>
-          <div className="total-payhis-count">
-            ({`${Object.keys(orderGroup).length}개`})
-          </div>
+          <div className="total-payhis-count">({`${orderCount}개`})</div>
         </div>
       </div>
       <div className="payhis-page-filter">
@@ -87,7 +87,7 @@ function MyPaymentHistoryPage({
         <div className="payhis-search-option"></div>
         <div className="payhis-filter-box"></div>
       </div>
-      {orderGroup.length > 0 ? (
+      {orderCount > 0 ? (
         Object.keys(orderGroup).map((orderId) => (
           <div key={orderId} className="payment-histories">
             <div className="payment-content-title">
@@ -231,65 +231,5 @@ function MyPaymentHistoryPage({
     </div>
   );
 }
-
-// Helper function to group payments by orderId
-export const groupByOrderId = (paymentHistory) => {
-  return paymentHistory.reduce((groups, payment) => {
-    const {
-      orderId,
-      paymentId,
-      memberId,
-      buyerAddr,
-      discount,
-      merchantUid,
-      ordererName,
-      orderedAt,
-      paiedAt,
-      payMethod,
-      phoneNumber,
-      review,
-      statusType,
-      totalPrice,
-      imagePath,
-      productName,
-      productPrice,
-      productQuantity,
-      option,
-      productId,
-    } = payment;
-
-    if (!groups[orderId]) {
-      groups[orderId] = {
-        orderId,
-
-        memberId,
-        buyerAddr,
-        discount,
-        merchantUid,
-        ordererName,
-        orderedAt,
-        paiedAt,
-        payMethod,
-        phoneNumber,
-        statusType,
-        totalPrice,
-        products: [],
-      };
-    }
-
-    groups[orderId].products.push({
-      imagePath,
-      productName,
-      productPrice,
-      productQuantity,
-      option,
-      productId,
-      paymentId,
-      review,
-    });
-
-    return groups;
-  }, {});
-};
 
 export { MyPaymentHistoryPage };
