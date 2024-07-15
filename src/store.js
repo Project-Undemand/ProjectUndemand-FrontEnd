@@ -45,6 +45,17 @@ const addressListSlice = createSlice({
   },
 });
 
+// Create the addressList slice
+const memberListSlice = createSlice({
+  name: "memberList",
+  initialState: [], // Initial state is an empty array
+  reducers: {
+    setMemberList: (state, action) => {
+      return action.payload; // Replace the current state with the new payload
+    },
+  },
+});
+
 // 주소 목록 상태를 설정하는 액션 생성자
 export const { setAddressList } = addressListSlice.actions;
 // 사용자의 리뷰 목록 상태를 설정하는 액션 생성자
@@ -53,6 +64,8 @@ export const { setMyReviewList } = myReviewListSlice.actions;
 export const { setWishList } = wishListSlice.actions;
 // 결제 내역 그룹 상태를 설정하는 액션 생성자
 export const { setOrderGroup } = orderGroupSlice.actions;
+// 회원 목록 상태를 설정하는 액션 생성자
+export const { setMemberList } = memberListSlice.actions;
 
 // Configure the Redux store
 const store = configureStore({
@@ -62,6 +75,7 @@ const store = configureStore({
     wishList: wishListSlice.reducer, // Include the wishList slice reducer
     myReviewList: myReviewListSlice.reducer, // Include the myReviewList slice reducer
     addressList: addressListSlice.reducer, // Include the addressList slice reducer
+    memberList: memberListSlice.reducer, // Include the memberList slice reducer
   },
 });
 
