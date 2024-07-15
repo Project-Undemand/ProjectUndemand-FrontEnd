@@ -36,6 +36,10 @@ import "./App.css";
 import "react-image-crop/dist/ReactCrop.css";
 
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+
   const [categoryData, setCategoryData] = useState([]);
   const [cartProducts, setCartProducts] = useState([]);
   const [isLoggedin, setIsLoggedin] = useState(false);
@@ -49,13 +53,10 @@ function App() {
 
   const [isScroll, setIscroll] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
   const [isReceiptPage, setIsReceiptPage] = useState(false);
   const [isCategoryPage, setIsCategoryPage] = useState(false);
   const channelTalkPlugInKey = process.env.REACT_APP_CHANNELTALK_PLUGIN_KEY;
 
-  const dispatch = useDispatch();
   const profileData = useSelector((state) => state.profile.profileData);
   // 리덕스 상태에서 프로필 이미지 가져오기
   const profileImage = useSelector((state) => state.profile.profileImage);
@@ -452,7 +453,10 @@ function App() {
             <Route path="/cart/order" element={<PaymentPage />} />
             <Route path="/cart/order/done" element={<ReceiptPage />} />
             <Route element={<AdminRoutes memberRole={memberRole} />}>
-              <Route path="/admin/*" element={<AdministratorPage />} />
+              <Route
+                path="/admin/*"
+                element={<AdministratorPage profileData={profileData} />}
+              />
             </Route>
             <Route element={<AdminRoutes memberRole={memberRole} />}>
               <Route
