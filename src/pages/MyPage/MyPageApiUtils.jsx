@@ -42,7 +42,6 @@ export const fetchPaymentHistory = async (
         withCredentials: true,
       }
     );
-
     const groupedData = groupByOrderId(response.data);
     setLocalOrderGroup(groupedData);
     dispatch(setOrderGroup(groupedData));
@@ -146,6 +145,7 @@ const groupByOrderId = (paymentHistory) => {
       productQuantity,
       option,
       productId,
+      manufacturer,
     } = payment;
 
     if (!groups[orderId]) {
@@ -171,6 +171,7 @@ const groupByOrderId = (paymentHistory) => {
       imagePath,
       productName,
       productPrice,
+      manufacturer,
       productQuantity,
       option,
       productId,
