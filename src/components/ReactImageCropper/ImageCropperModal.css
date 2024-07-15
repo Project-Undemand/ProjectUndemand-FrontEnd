@@ -27,11 +27,13 @@
 }
 
 .modal-content-wrapper {
-  display: flex;
   min-height: 100vh;
+
+  display: flex;
   justify-content: center;
-  padding: 3rem 0.5rem; /* equivalent to px-2 py-12 */
-  text-align: center;
+  align-items: center;
+
+  padding: 3rem 0.5rem;
 }
 
 .modal-content {
@@ -39,7 +41,7 @@
 
   min-height: 500px;
   height: 70vh;
-  max-height: 800px;
+  max-height: 1000px;
 
   width: 60%;
   max-width: 60%;
