@@ -1,18 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-export const MenuItem = ({ link, iconSrc, text, active, onClick }) => {
+export const MenuItem = ({ link, iconSrc, text }) => {
+  const location = useLocation();
+  const isActive = location.pathname === link;
+
   return (
     <li
-      className={`menu-item overview ${active ? "active" : ""}`}
-      onClick={onClick}
+      className={`menu-item ${isActive ? "active" : ""}`}
       style={{
-        borderLeft: active ? "5px solid purple" : "none",
+        borderLeft: isActive ? "5px solid purple" : "none",
       }}
     >
       <Link to={link}>
-        <img src={iconSrc} alt="default-image" className="menu-icon-img" />
-        <span>{text}</span>
+        <img src={iconSrc} alt={`${text} icon`} className="menu-icon-img" />
+        <span className="menu-icon-text">{text}</span>
       </Link>
     </li>
   );

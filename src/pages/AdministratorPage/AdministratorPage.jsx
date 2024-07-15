@@ -6,7 +6,6 @@ import "./AdministratorPage.css";
 import { AllProducts } from "./AllProducts.jsx";
 import { Inventory } from "./Inventory.jsx";
 import ManagementModal from "./ManagementModal.jsx";
-import { MemberAdminMainPage } from "./MemberAdministratorPage/MemberAdminMainPage.jsx";
 
 function AdministratorPage() {
   const [managementModalOpen, setManagementModalOpen] = useState(false);
@@ -34,7 +33,7 @@ function AdministratorPage() {
           </span>
         </div>
         <div className="admin-menu-btn-container">
-          <Link to={`/admin/members`}>Member Admin Page</Link>
+          <Link to={`/admin/members/overview`}>Member Admin Page</Link>
           <button
             onClick={() => {
               openManagementModal();
@@ -58,9 +57,7 @@ function AdministratorPage() {
           <Route path="/" element={<Navigate to="all-products" replace />} />
           <Route path="/all-products" element={<AllProducts />}></Route>
           <Route path="/inventory" element={<Inventory />} />
-          {/* <Route path="/members" element={<MemberAdminMainPage />} /> */}
         </Routes>
-        {/* <div className="input-section">{renderMenu()}</div> */}
       </div>
       {managementModalOpen && (
         <ManagementModal

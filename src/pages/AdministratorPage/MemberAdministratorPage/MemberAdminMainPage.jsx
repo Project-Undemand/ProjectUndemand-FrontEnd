@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 
 // CSS
 import "./MemberAdminMainPage.css";
 import { MenuItem } from "./MemberAdminComponent.jsx";
+import { OverviewDashboard } from "./MemberManagementPages/OverviewDashboard.jsx";
+import { MemberManagementPage } from "./MemberManagementPages/MemberManagementPage.jsx";
+import { PaymentManagementPage } from "./MemberManagementPages/PaymentManagementPage.jsx";
+import { ProductManagementPage } from "./MemberManagementPages/ProductManagementPage.jsx";
+import { calculateDaysWithUs } from "./MemberAdminApiUtil.jsx";
 
 function MemberAdminMainPage({ profileData, profileImageUrl }) {
   const [currentTime, setCurrentTime] = useState("");
@@ -33,10 +38,9 @@ function MemberAdminMainPage({ profileData, profileImageUrl }) {
     setActiveMenuItem(menuItem);
   };
 
-  console.log(profileData);
   const email = profileData?.member?.email || "이메일";
-  const username = profileData?.member?.username;
-  const nickname = profileData?.member?.nickname;
+  const username = profileData?.member?.username || "회원이름";
+  const nickname = profileData?.member?.nickname || "닉네임";
   const memberAges = profileData?.memberAges || "성별";
   const memberGender = profileData?.memberGender || "연령대";
   const memberRole =
@@ -47,27 +51,14 @@ function MemberAdminMainPage({ profileData, profileImageUrl }) {
       : "일반";
 
   const joinedAt =
-    profileData?.member?.joined_at.substring(0, 10) || "가입날짜";
+    profileData?.member?.joined_at?.substring(0, 10) || "가입날짜";
   const last_logged_in_date =
-    profileData?.member?.last_logged_in_date.substring(0, 10) ||
+    profileData?.member?.last_logged_in_date?.substring(0, 10) ||
     "최근로그인날짜";
   const daysWithUs = calculateDaysWithUs(joinedAt, last_logged_in_date);
 
-  function calculateDaysWithUs(joinedDate, lastLoginDate) {
-    if (joinedDate === "가입날짜" || lastLoginDate === "최근로그인날짜") {
-      return "N/A";
-    }
-
-    const joined = new Date(joinedDate);
-    const lastLogin = new Date(lastLoginDate);
-    // 날짜에 하루를 추가
-    joined.setDate(joined.getDate());
-    lastLogin.setDate(lastLogin.getDate() + 1);
-    // 가입 날짜와 최근 로그인 날짜를 계산.
-    const diffTime = Math.abs(lastLogin - joined);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 밀리초를 일수로 변환
-
-    return diffDays + " Days";
+  if (!profileData) {
+    return <div>Loading...</div>; // 혹은 적절한 로딩 컴포넌트나 메시지
   }
 
   return (
@@ -100,7 +91,7 @@ function MemberAdminMainPage({ profileData, profileImageUrl }) {
               </Link>
             </div>
             <div className="setting-box">
-              <Link to={`/admin/members`}>
+              <Link to={`/admin/members/overview`}>
                 <img
                   src="https://i.ibb.co/JmtTJmz/setting.png"
                   alt="notification-image"
@@ -119,91 +110,63 @@ function MemberAdminMainPage({ profileData, profileImageUrl }) {
             <div className="menu-top">Main Menu</div>
             <ul>
               <MenuItem
-                to={``}
+                link="/admin/members/overview"
                 iconSrc="https://i.ibb.co/cNwHfBJ/analysis.png"
                 text="전체 개요"
-                active={activeMenuItem === "overview"}
-                onClick={() => handleMenuItemClick("overview")}
+                active={location.pathname === "/admin/members/overview"}
               />
               <MenuItem
-                to={``}
+                link="/admin/members/member-manage"
                 iconSrc="https://i.ibb.co/9qL0M3w/people.png"
                 text="회원 관리"
-                active={activeMenuItem === "member"}
-                onClick={() => handleMenuItemClick("member")}
+                active={location.pathname === "/admin/members/member-manage"}
               />
               <MenuItem
-                to={``}
+                link="/admin/members/payment-manage"
                 iconSrc="https://i.ibb.co/zX5qfsF/invoice.png"
                 text="결제 관리"
-                active={activeMenuItem === "payment"}
-                onClick={() => handleMenuItemClick("payment")}
+                active={location.pathname === "/admin/members/payment-manage"}
               />
               <MenuItem
-                to={``}
+                link="/admin/members/product-manage"
+                iconSrc="https://i.ibb.co/pPXW7Y4/tshirt.png"
+                text="상품 관리"
+                active={location.pathname === "/admin/members/product-manage"}
+              />
+              {/* <MenuItem
+                to={`/admin/members`}
                 iconSrc="https://i.ibb.co/r3THbnG/admin.png"
                 text="관리자 전용"
                 active={activeMenuItem === "admin"}
                 onClick={() => handleMenuItemClick("admin")}
               />
               <MenuItem
-                to={``}
+                to={`/admin/members`}
                 iconSrc="https://i.ibb.co/KrTP8zh/seller.png"
                 text="판매자 전용"
                 active={activeMenuItem === "seller"}
                 onClick={() => handleMenuItemClick("seller")}
-              />
-              <MenuItem
-                to={``}
-                iconSrc="https://i.ibb.co/pPXW7Y4/tshirt.png"
-                text="상품 관리"
-                active={activeMenuItem === "product"}
-                onClick={() => handleMenuItemClick("product")}
-              />
+              /> */}
             </ul>
           </div>
-          <div className="content-middle">
-            <div className="admin-contents-container">
-              <div className="admin-feature-intro">
-                <div className="admin-feature-intro-title">
-                  <h2>
-                    {memberRole} {username || nickname || ""}님 반갑습니다 !
-                  </h2>
-                  <button
-                    className="admin-feature-intro-close-button"
-                    onClick={() =>
-                      (document.querySelector(
-                        ".admin-feature-intro"
-                      ).style.display = "none")
-                    }
-                  >
-                    <img
-                      src="https://i.ibb.co/RSJVmzf/close.png"
-                      alt="Close"
-                      className="admin-feature-intro-close-icon"
-                    />
-                  </button>
-                </div>
-                <div className="admin-feature-intro-content">
-                  <span>
-                    ODD 의 관리자 페이지에서는, 재고 관리, 상품 관리, 전체 회원
-                    관리
-                  </span>
-                  <span>
-                    판매자와 관리자를 위한 데이터 분석 및 보고 등을 제공하고
-                    있습니다.
-                  </span>
-                  <span style={{ marginTop: "20px", fontWeight: "normal" }}>
-                    On-demand Shop, PU Team . July 2024
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="admin-contents-container">
-              <div className=""></div>
-            </div>
-            <div className="admin-contents-container"></div>
-          </div>
+          <Routes>
+            <Route
+              path="/overview"
+              element={<OverviewDashboard profileData={profileData} />}
+            />
+            <Route
+              path="/member-manage"
+              element={<MemberManagementPage profileData={profileData} />}
+            />
+            <Route
+              path="/payment-manage"
+              element={<PaymentManagementPage profileData={profileData} />}
+            />
+            <Route
+              path="/product-manage"
+              element={<ProductManagementPage profileData={profileData} />}
+            />
+          </Routes>
           <div className="content-right">
             <div className="admin-page-profile-container">
               <div className="admin-page-profile-image-box">
