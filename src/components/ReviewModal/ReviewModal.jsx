@@ -26,7 +26,8 @@ function ReviewModal({
   const [imagePreviews, setImagePreviews] = useState([]);
   const defalteReviewImage =
     "https://image.ohou.se/i/bucketplace-v2-development/uploads/productions/1557828582299_MBRS6Sprm8.gif?gif=1&w=72&h=72&c=c";
-  const FileSelectButtonImage = "https://i.ibb.co/YLpZQGg/png.png";
+  const FileSelectButtonImage =
+    "https://i.ibb.co/NWtLpRM/free-icon-add-image-1329953.png";
 
   const fileInputRef = useRef(null);
 
