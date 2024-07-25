@@ -1,21 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { fetchMemberLists } from "../MemberAdminApiUtil";
 import "./MemberManagementPage.css";
 
 function MemberManagementPage({ profileData }) {
   const dispatch = useDispatch();
-
   const members = useSelector((state) => state.memberList);
   const [filteredMembers, setFilteredMembers] = useState([]);
   const [selectedRole, setSelectedRole] = useState("ALL");
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
   const membersPerPage = 5;
 
-  const memberId = localStorage.getItem("memberId");
   const memberRole = profileData?.member?.member_role;
 
   useEffect(() => {
@@ -35,11 +31,11 @@ function MemberManagementPage({ profileData }) {
         members.filter((member) => member.memberRole === selectedRole)
       );
     }
-  }, [selectedRole]);
+  }, [selectedRole, members]);
 
   const handleRoleChange = (event) => {
     setSelectedRole(event.target.value);
-    setIsDropdownVisible(false); // 선택 후 드롭다운을 숨깁니다.
+    setIsDropdownVisible(false);
   };
 
   const toggleDropdown = () => {
@@ -52,6 +48,38 @@ function MemberManagementPage({ profileData }) {
     indexOfFirstMember,
     indexOfLastMember
   );
+
+  // 비어있는 행 추가 로직
+  const emptyRows = [];
+  if (currentMembers.length < membersPerPage) {
+    for (let i = currentMembers.length; i < membersPerPage; i++) {
+      emptyRows.push(
+        <tr className="table-row" key={`empty-${i}`}>
+          <td>
+            <input type="checkbox" disabled />
+          </td>
+          <td>
+            <span>&nbsp;</span>
+          </td>
+          <td>
+            <span>&nbsp;</span>
+          </td>
+          <td>
+            <span>&nbsp;</span>
+          </td>
+          <td>
+            <span>&nbsp;</span>
+          </td>
+          <td>
+            <span>&nbsp;</span>
+          </td>
+          <td>
+            <span>&nbsp;</span>
+          </td>
+        </tr>
+      );
+    }
+  }
 
   const pageNumbers = [];
   for (
@@ -67,7 +95,7 @@ function MemberManagementPage({ profileData }) {
       <div className="admin-contents-container">
         <div className="members-info-container">
           <div className="members-info-contents">
-            <h2>회원 ({`${Object.keys(members).length}명`})</h2>
+            <h2>Members ({`${Object.keys(members).length}명`})</h2>
             <p>전체 회원에 대한 리스트입니다.</p>
             <table
               border="1"
@@ -144,6 +172,7 @@ function MemberManagementPage({ profileData }) {
                     </td>
                   </tr>
                 ))}
+                {emptyRows}
               </tbody>
             </table>
             <div className="pagination">
@@ -158,8 +187,8 @@ function MemberManagementPage({ profileData }) {
               ))}
             </div>
             <div className="address-actions">
-              <button className="delete-button">판매자 등록</button>
-              <button className="register-button">비활성화</button>
+              <button className="register-button">판매자 등록</button>
+              <button className="delete-button">비활성화</button>
             </div>
           </div>
         </div>
