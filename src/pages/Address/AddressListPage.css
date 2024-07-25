@@ -71,10 +71,16 @@
 }
 
 .table-row {
+  flex: 1 1 auto;
+
   min-height: 64.05px;
   height: 64.05px;
-  max-height: 71px;
+  /* max-height: 71px; */
   width: 100%;
+}
+
+.table-row > * {
+  flex: 1;
 }
 
 .table-cell-content {
@@ -97,7 +103,7 @@
 
 .ec-base-table th,
 .ec-base-table td {
-  padding: 10px;
+  padding: 5px;
   text-align: center;
   border: none;
 }
