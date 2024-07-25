@@ -122,7 +122,7 @@ export const fetchAddressLists = async (dispatch, memberId) => {
 };
 
 // Helper function to group payments by orderId
-const groupByOrderId = (paymentHistory) => {
+export const groupByOrderId = (paymentHistory) => {
   return paymentHistory.reduce((groups, payment) => {
     const {
       orderId,
