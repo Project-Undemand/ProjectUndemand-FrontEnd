@@ -75,23 +75,14 @@ const Login = ({ isLoggedin, setIsLoggedin }) => {
       }
     } catch (error) {
       if (error.response) {
-        switch (error.response.status) {
-          case 400:
-          case 401:
-            swal({ title: ERROR_MESSAGES.INVALID_CREDENTIALS });
-            break;
-          case 404:
-            swal({ title: ERROR_MESSAGES.EMAIL_NOT_FOUND });
-            break;
-          case 500:
-            swal({ title: ERROR_MESSAGES.SERVER_ERROR });
-            break;
-          default:
-            swal({ title: ERROR_MESSAGES.LOGIN_FAILED });
-        }
+        const errorMessage =
+          error.response.data.error || "로그인에 실패했습니다.";
+        swal({ title: errorMessage });
         console.error("로그인 실패: ", error.response);
       } else {
-        swal({ title: ERROR_MESSAGES.NETWORK_ERROR });
+        swal({
+          title: "네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.",
+        });
         console.error("로그인 실패: ", error);
       }
     }
