@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const ACCESS_TOKEN_EXPIRATION_PERIOD = 10 * 60 * 1000; // 10분 (단위: 밀리초)
+const ACCESS_TOKEN_EXPIRATION_PERIOD = 27 * 60 * 1000; // 27분 (단위: 밀리초)
 
 // Access token을 주기적으로 갱신하는 컴포넌트
 export const PeriodicAccessTokenRefresher = () => {
