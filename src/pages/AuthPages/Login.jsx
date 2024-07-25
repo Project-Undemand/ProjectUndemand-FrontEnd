@@ -28,19 +28,26 @@ const Login = ({ isLoggedin, setIsLoggedin }) => {
     setPassword(newPassword);
   };
 
+  const ERROR_MESSAGES = {
+    SERVER_ERROR: "서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
+    LOGIN_FAILED: "로그인에 실패했습니다. 다시 시도해주세요.",
+    NETWORK_ERROR: "네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.",
+    INVALID_CREDENTIALS: "비밀번호가 틀렸습니다.",
+    EMAIL_NOT_FOUND: "존재하지 않는 이메일입니다.",
+  };
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    const LoginData = {
+    const loginData = {
       email,
       password,
     };
 
-    // 서버에 회원가입 요청을 보내고 응답을 받아옴
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL_FOR_IMG}/login`,
-        LoginData,
+        loginData,
         {
           headers: {
             Authorization: localStorage.getItem("Authorization"),
@@ -52,14 +59,11 @@ const Login = ({ isLoggedin, setIsLoggedin }) => {
       const newAccessToken = response.data.accessToken;
 
       if (parseInt(response.status) === 200) {
-        // 로컬스토리지에 memberId ,memberRole ,Authorization 을 저장
         extractUserInfoFromAccess(newAccessToken);
-        // App.js 에서 isLoggedin 여부를 관리하는데, 그걸 true 로 해주면 로그인 된 상태로 인식
         setIsLoggedin(true);
 
         const memberId = localStorage.getItem("memberId");
 
-        // Fetch profile data and image after login
         await Promise.all([
           dispatch(fetchProfile(memberId)),
           dispatch(fetchProfileImage(memberId)),
@@ -71,27 +75,23 @@ const Login = ({ isLoggedin, setIsLoggedin }) => {
       }
     } catch (error) {
       if (error.response) {
-        if (error.response.status === 500) {
-          swal({
-            title: "서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
-          });
-        } else if (
-          error.response.status === 400 ||
-          error.response.status === 401
-        ) {
-          swal({
-            title: "가입되지 않은 이메일 이거나, 이메일이 인증되지 않았습니다.",
-          });
-        } else {
-          swal({
-            title: "로그인에 실패했습니다. 다시 시도해주세요.",
-          });
+        switch (error.response.status) {
+          case 400:
+          case 401:
+            swal({ title: ERROR_MESSAGES.INVALID_CREDENTIALS });
+            break;
+          case 404:
+            swal({ title: ERROR_MESSAGES.EMAIL_NOT_FOUND });
+            break;
+          case 500:
+            swal({ title: ERROR_MESSAGES.SERVER_ERROR });
+            break;
+          default:
+            swal({ title: ERROR_MESSAGES.LOGIN_FAILED });
         }
         console.error("로그인 실패: ", error.response);
       } else {
-        swal({
-          title: "네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.",
-        });
+        swal({ title: ERROR_MESSAGES.NETWORK_ERROR });
         console.error("로그인 실패: ", error);
       }
     }
