@@ -8,7 +8,7 @@ import { OverviewDashboard } from "./MemberManagementPages/OverviewDashboard.jsx
 import { MemberManagementPage } from "./MemberManagementPages/MemberManagementPage.jsx";
 import { PaymentManagementPage } from "./MemberManagementPages/PaymentManagementPage.jsx";
 import { ProductManagementPage } from "./MemberManagementPages/ProductManagementPage.jsx";
-import { calculateDaysWithUs } from "./MemberAdminApiUtil.jsx";
+import { calculateDaysWithUs } from "./MemberApiUtil.jsx";
 
 function MemberAdminMainPage({ profileData, profileImageUrl }) {
   const [currentTime, setCurrentTime] = useState("");
@@ -83,7 +83,7 @@ function MemberAdminMainPage({ profileData, profileImageUrl }) {
             <div className="notification-box">
               <Link to={`/admin/members`}>
                 <img
-                  src="https://i.ibb.co/wcsRRh2/1.png"
+                  src="https://i.postimg.cc/CxFpgmCf/1.png"
                   alt="notification-image"
                   className="notification-image"
                   style={{ width: "30px", height: "30px" }}
@@ -93,7 +93,7 @@ function MemberAdminMainPage({ profileData, profileImageUrl }) {
             <div className="setting-box">
               <Link to={`/admin/members/overview`}>
                 <img
-                  src="https://i.ibb.co/JmtTJmz/setting.png"
+                  src="https://i.postimg.cc/zfcsTNsn/setting.png"
                   alt="notification-image"
                   className="notification-image"
                   style={{ width: "30px", height: "30px" }}
@@ -111,25 +111,25 @@ function MemberAdminMainPage({ profileData, profileImageUrl }) {
             <ul>
               <MenuItem
                 link="/admin/members/overview"
-                iconSrc="https://i.ibb.co/cNwHfBJ/analysis.png"
+                iconSrc="https://i.postimg.cc/TPN6QgD5/business-intelligence.png"
                 text="전체 개요"
                 active={location.pathname === "/admin/members/overview"}
               />
               <MenuItem
                 link="/admin/members/member-manage"
-                iconSrc="https://i.ibb.co/9qL0M3w/people.png"
+                iconSrc="https://i.postimg.cc/mgVVFSvM/people.png"
                 text="회원 관리"
                 active={location.pathname === "/admin/members/member-manage"}
               />
               <MenuItem
                 link="/admin/members/payment-manage"
-                iconSrc="https://i.ibb.co/zX5qfsF/invoice.png"
+                iconSrc="https://i.postimg.cc/bw2NZ6DV/invoice.png"
                 text="결제 관리"
                 active={location.pathname === "/admin/members/payment-manage"}
               />
               <MenuItem
                 link="/admin/members/product-manage"
-                iconSrc="https://i.ibb.co/pPXW7Y4/tshirt.png"
+                iconSrc="https://i.postimg.cc/2jZDFq83/digital-product.png"
                 text="상품 관리"
                 active={location.pathname === "/admin/members/product-manage"}
               />
@@ -189,7 +189,7 @@ function MemberAdminMainPage({ profileData, profileImageUrl }) {
                 <div className="profile-btn-card">
                   <button className="more-about-profile-btn">
                     <img
-                      src="https://i.ibb.co/gPNJh1r/dots.png"
+                      src="https://i.postimg.cc/ZRv1cgmX/dots.png"
                       className="more-about-profile-btn-img"
                     ></img>
                   </button>
@@ -205,25 +205,3 @@ function MemberAdminMainPage({ profileData, profileImageUrl }) {
 }
 
 export { MemberAdminMainPage };
-
-/*
-https://i.ibb.co/pPXW7Y4/tshirt.png
-https://i.ibb.co/9qL0M3w/people.png
-https://i.ibb.co/zX5qfsF/invoice.png
-
-https://i.ibb.co/4JjNMqv/addresshome.png
-https://i.ibb.co/cNwHfBJ/analysis.png
-https://i.ibb.co/sypJkLQ/business-intelligence.png
-https://i.ibb.co/3v1dVPB/digital-product.png
-https://i.ibb.co/FWx044n/stats.png
-https://i.ibb.co/M6wgTGs/furniture.png
-https://i.ibb.co/SdcCwBm/reviews.png
-
-https://i.ibb.co/wcsRRh2/1.png
-https://i.ibb.co/x7GsT5P/2.png
-https://i.ibb.co/JmtTJmz/setting.png
-
-https://i.ibb.co/gPNJh1r/dots.png
-https://i.ibb.co/r3THbnG/admin.png
-https://i.ibb.co/KrTP8zh/seller.png
-*/

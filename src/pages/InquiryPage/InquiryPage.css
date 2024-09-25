@@ -1,126 +1,128 @@
 .inquiry-page {
-    width: 100%;
-    display: flex;
-    flex-flow: column;
-    justify-content: flex-start;
-    align-items: center;
-    margin-top: 30px;
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 30px;
 }
 
 .inquiry-page-top {
-    width: 70%;
-    display: flex;
-    flex-flow: column;
-    justify-content: flex-start;
-    align-items: center;
+  width: 70%;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-.inquiry-page-top>.inquiry-count {
-    font-size: 1.25rem;
-    font-weight: bold;
+.inquiry-page-top > .inquiry-count {
+  font-size: 1.25rem;
+  font-weight: bold;
 }
 
-.inquiry-page-top>.count-box {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 60px;
+.inquiry-page-top > .count-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 60px;
 }
 
 .inquiry-page-middle {
-    width: 70%;
-    padding-top: 30px;
+  width: 70%;
+  padding-top: 30px;
 }
 
 .inquiry-filter {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    border-bottom: 1.5px solid rgb(210, 210, 210);
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1.5px solid rgb(210, 210, 210);
 }
 
-.inquiry-filter>.inquiry-sort-box {
-    width: 20%;
-    position: relative;
+.inquiry-filter > .inquiry-sort-box {
+  width: 20%;
+  position: relative;
 }
 
-.inquiry-filter>.inquiry-sort-box>.selected-sort-option {
-    width: 100%;
-    height: 60px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 5px;
+.inquiry-filter > .inquiry-sort-box > .selected-sort-option {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5px;
 }
 
-.inquiry-filter>.inquiry-sort-box>.inquiry-sort-option {
-    width: 70%;
-    display: none;
-    flex-flow: column;
-    justify-content: flex-start;
-    align-items: flex-end;
-    position: absolute;
-    top: 50px;
-    background-color: rgb(255, 255, 255);
-    padding: 10px 0px 10px 20px;
-    box-shadow: rgb(0 0 0 / 7%) 0px 0px 6px 3px;
+.inquiry-filter > .inquiry-sort-box > .inquiry-sort-option {
+  width: 70%;
+  display: none;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  position: absolute;
+  top: 50px;
+  background-color: rgb(255, 255, 255);
+  padding: 10px 0px 10px 20px;
+  box-shadow: rgb(0 0 0 / 7%) 0px 0px 6px 3px;
 }
 
-.inquiry-filter>.inquiry-sort-box>.inquiry-sort-option.drop-option {
-    display: flex;
+.inquiry-filter > .inquiry-sort-box > .inquiry-sort-option.drop-option {
+  display: flex;
 }
 
-.inquiry-filter>.inquiry-sort-box>.inquiry-sort-option>li {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+.inquiry-filter > .inquiry-sort-box > .inquiry-sort-option > li {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-.inquiry-filter>.inquiry-filter-box {
-    width: 20%;
-    position: relative;
+.inquiry-filter > .inquiry-filter-box {
+  width: 20%;
+  position: relative;
 }
 
-.inquiry-filter>.inquiry-filter-box>.selected-filter-option {
-    width: 100%;
-    height: 60px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 5px;
+.inquiry-filter > .inquiry-filter-box > .selected-filter-option {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5px;
 }
 
-.inquiry-filter>.inquiry-filter-box>.inquiry-filter-option {
-    width: 75%;
-    display: none;
-    flex-flow: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    position: absolute;
-    top: 50px;
-    background-color: rgb(255, 255, 255);
-    padding: 10px 0px 10px 20px;
-    box-shadow: rgb(0 0 0 / 7%) 0px 0px 6px 3px;
+.inquiry-filter > .inquiry-filter-box > .inquiry-filter-option {
+  width: 75%;
+  display: none;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  position: absolute;
+  top: 50px;
+  background-color: rgb(255, 255, 255);
+  padding: 10px 0px 10px 20px;
+  box-shadow: rgb(0 0 0 / 7%) 0px 0px 6px 3px;
 }
 
-.inquiry-filter>.inquiry-filter-box>.inquiry-filter-option.drop-option {
-    display: flex;
+.inquiry-filter > .inquiry-filter-box > .inquiry-filter-option.drop-option {
+  display: flex;
 }
 
-.inquiry-filter>.inquiry-filter-box>.inquiry-filter-option>li {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+.inquiry-filter > .inquiry-filter-box > .inquiry-filter-option > li {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .inquiry-article-section {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

@@ -120,75 +120,53 @@ const UpdateUserInfoPage = ({
   return (
     <div className="profile-update-container">
       <div className="update-user-info-page-title">
-        <span>회원 정보 수정</span>
+        <span>기본 회원정보</span>
       </div>
       <div className="update-user-info-page">
         <div className="user-info-input-container">
-          <div className="update-user-info-sub-title">
-            <span>회원 정보</span>
-          </div>
-          <div className="profile-image-modal-container">
-            <div className="profile-image-wrapper">
-              <img
-                src={profileImageUrl}
-                alt="profileImage"
-                className="profile-image"
-              />
+          <div className="profile-image-wrapper">
+            <div className="profile-info-form">
+              <label>
+                사진 <span className="required"></span>
+              </label>
+              <div className="profile-image-content">
+                <img
+                  src={profileImageUrl}
+                  alt="profileImage"
+                  className="profile-image"
+                />
+                <span>회원님을 알릴 수 있는 사진을 등록해주세요.</span>
+                <span>
+                  등록된 사진은 회원님의 게시물이나 댓글들에 사용됩니다.
+                </span>
+              </div>
+            </div>
+            {/* <button
+              className="change-photo-button"
+              title="Change photo"
+              onClick={() => setModalOpen(true)}
+            >
+              <PencilIcon />
+            </button> */}
+            <div>
               <button
-                className="change-photo-button"
-                title="Change photo"
+                className="profile-info-edit-btn"
                 onClick={() => setModalOpen(true)}
               >
-                <PencilIcon />
+                수정
               </button>
             </div>
-            <div className="user-intro-container">
-              <div className="user-intro-title">
-                <label>
-                  소개 <span className="required">*</span>
-                </label>
-              </div>
-              <div className="user-intro-content">
-                {isEditing["intro"] ? (
-                  <input
-                    type="text"
-                    name={"intro"}
-                    ref={refs["intro"]}
-                    defaultValue={introduction}
-                    className={`intro-input`}
-                  />
-                ) : (
-                  <span>{introduction}</span>
-                )}
-              </div>
-              <div className="user-intro-buttons">
-                {isEditing["intro"] ? (
-                  <button
-                    className="profile-info-edit-btn"
-                    onClick={() => handleConfirm("intro")}
-                  >
-                    저장
-                  </button>
-                ) : (
-                  <button
-                    className="profile-info-edit-btn"
-                    onClick={() => handleEdit("intro")}
-                  >
-                    수정
-                  </button>
-                )}
-              </div>
-            </div>
-            {modalOpen && (
-              <Modal
-                memberId={memberId}
-                profileData={profileData}
-                updateAvatar={updateAvatar}
-                closeModal={() => setModalOpen(false)}
-                setProfileImageUrl={setProfileImageUrl}
-              />
-            )}
           </div>
+          {modalOpen && (
+            <Modal
+              memberId={memberId}
+              profileData={profileData}
+              updateAvatar={updateAvatar}
+              closeModal={() => setModalOpen(false)}
+              setProfileImageUrl={setProfileImageUrl}
+            />
+          )}
+
           <div className="user-info-container">
             {fields.map((field) => (
               <div className="user-form-group top-border" key={field.name}>
@@ -233,6 +211,46 @@ const UpdateUserInfoPage = ({
                   Email <span className="required">*</span>
                 </label>
                 <span>{email}</span>
+              </div>
+            </div>
+            {/* 회원의 자기소개 컨테이너 */}
+            <div className="user-intro-container">
+              <div className="user-info-form">
+                <div className="user-intro-title">
+                  <label>
+                    소개 <span className="required">*</span>
+                  </label>
+                </div>
+                <div className="user-intro-content">
+                  {isEditing["intro"] ? (
+                    <input
+                      type="text"
+                      name={"intro"}
+                      ref={refs["intro"]}
+                      defaultValue={introduction}
+                      className={`intro-input`}
+                    />
+                  ) : (
+                    <span>{introduction}</span>
+                  )}
+                </div>
+              </div>
+              <div className="user-intro-buttons">
+                {isEditing["intro"] ? (
+                  <button
+                    className="profile-info-edit-btn"
+                    onClick={() => handleConfirm("intro")}
+                  >
+                    저장
+                  </button>
+                ) : (
+                  <button
+                    className="profile-info-edit-btn"
+                    onClick={() => handleEdit("intro")}
+                  >
+                    수정
+                  </button>
+                )}
               </div>
             </div>
             <div className="user-form-group top-border">

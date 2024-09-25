@@ -36,6 +36,18 @@ const Login = ({ isLoggedin, setIsLoggedin }) => {
     EMAIL_NOT_FOUND: "존재하지 않는 이메일입니다.",
   };
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if (urlParams.has("unauthorizedRedirect")) {
+      socialLoginAccessToken(navigate).then(() => {
+        setIsLoggedin(true);
+        setMemberId(localStorage.getItem("memberId"));
+        setMemberRole(localStorage.getItem("memberRole"));
+      });
+    }
+  }, [navigate]);
+
   const handleLogin = async (event) => {
     event.preventDefault();
 

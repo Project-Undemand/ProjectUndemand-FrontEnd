@@ -13,17 +13,16 @@
 
 .update-user-info-page {
   min-width: 400px;
-  width: 90%;
-  max-width: 1000px;
+  width: 100%;
 
   min-height: 720px;
   height: 100%;
-  max-height: 800px;
+  max-height: 1000px;
 
   display: flex;
   flex-flow: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
 
   margin-top: 30px;
 
@@ -41,20 +40,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  border-bottom: 3px solid black;
 }
 
 .update-user-info-page-title > span {
   font-size: 25px;
   font-weight: bold;
+
+  padding-right: 10px;
+  border-right: 3px solid black;
 }
 
 .user-info-input-container {
-  width: 100%;
+  width: 80%;
   height: 100%;
   /* 위-아래 배치, 정렬 */
   display: flex;
   flex-flow: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   /* 회원 정보 상단 여백 */
   margin-top: 20px;
@@ -89,45 +93,37 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
-
-  border: 1px solid #d7d5d5;
 }
 
 .user-intro-container {
-  width: 50%;
-  height: 250px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-
-  border-left: 1px solid #d7d5d5;
-}
-
-.user-intro-title {
   width: 100%;
-  height: 48px;
+  height: 220px;
 
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
-
-  background-color: #fbfafa;
+  align-items: flex-start;
 }
+
+.user-intro-title {
+  width: 300px;
+  height: 48px;
+
+  padding: 10px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .user-intro-content {
-  width: 100%;
+  width: 60%;
   height: 162px;
 
-  padding: 20px;
+  /* padding: 20px; */
 }
 .user-intro-buttons {
-  width: 80%;
-  height: 40px;
-
-  padding: 4px;
-
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -137,36 +133,48 @@
 /* 프로필 - 이미지 컨테이너 */
 .profile-image-wrapper {
   position: relative;
-  width: 50%;
-  height: 250px;
+  width: 100%;
+  height: 200px;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
 
   /* background-color: black; */
 }
+
+.profile-image-wrapper label {
+  width: 300px;
+  height: 48px;
+
+  font-size: 18px;
+
+  padding: 10px;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
 /* 프로필 - 이미지  */
 .profile-image {
-  width: 200px;
-  height: 200px;
+  width: 120px;
+  height: 120px;
 
   object-fit: cover;
   border-radius: 50%;
 
-  padding: 5px;
-  margin-top: 20px;
-
   border-color: #cbd5e0; /* equivalent to border-gray-400 */
+
+  margin-bottom: 15px;
 }
 
 /* 프로필 유저 정보 수정 페이지 - 편집 버튼 */
 .change-photo-button {
   position: absolute;
-  bottom: 1rem; /* 프로필 이미지 편집 버튼의 위아래 위치 조정 */
+  bottom: 6rem; /* 프로필 이미지 편집 버튼의 위아래 위치 조정 */
 
-  left: 0;
+  left: 13rem;
   right: 0;
 
   margin: auto;
@@ -176,7 +184,7 @@
   border-radius: 50%; /* equivalent to rounded-full */
   background-color: #ffffff; /* changed to white */
 
-  border: 1px solid #4a5568; /* equivalent to border-gray-600 */
+  border: 0.8px solid #b1b5bb; /* equivalent to border-gray-600 */
 }
 
 .change-photo-button:hover {
@@ -190,8 +198,6 @@
   display: flex;
   align-items: center;
 
-  border-top: 1px solid #d7d5d5;
-  border-bottom: 1px solid #d7d5d5;
   border-left: 0;
   border-right: 0;
 
@@ -199,13 +205,12 @@
 }
 
 .user-form-group label {
-  width: 200px;
+  width: 300px;
   height: 48px;
 
   font-size: 18px;
 
   padding: 10px;
-  background-color: #fbfafa;
 
   display: flex;
   justify-content: flex-start;
@@ -238,7 +243,7 @@
 
 /*  프로필 이미지 위의 수정버튼 박스 */
 .user-info-container {
-  width: 90%;
+  width: 100%;
   height: 100%;
 
   display: flex;
@@ -247,12 +252,28 @@
   align-items: flex-start;
 }
 
-.user-info-form {
+.profile-info-form {
   width: 100%;
+
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
+}
+
+.profile-image-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.user-info-form {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .profile-info-data-container {
@@ -350,7 +371,7 @@
 }
 
 .profile-info-edit-btn {
-  width: 45px;
+  width: 65px;
   height: 32px;
 
   border-radius: 5px;

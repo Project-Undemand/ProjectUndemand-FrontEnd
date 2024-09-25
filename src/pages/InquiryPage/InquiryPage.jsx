@@ -26,6 +26,7 @@ function InquiryPage() {
           }
         );
         setInquiryData(inquiryResponse.data);
+        console.log(inquiryData);
         setInquiryDataLength(inquiryResponse.data.length);
       } catch (error) {
         console.error("Error fetching category data:", error);

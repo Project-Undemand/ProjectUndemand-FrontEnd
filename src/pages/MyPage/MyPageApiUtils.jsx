@@ -45,6 +45,8 @@ export const fetchPaymentHistory = async (
     const groupedData = groupByOrderId(response.data);
     setLocalOrderGroup(groupedData);
     dispatch(setOrderGroup(groupedData));
+    console.log(response);
+    console.log(groupedData);
 
     const fetchProductData = async () => {
       const inventories = [];

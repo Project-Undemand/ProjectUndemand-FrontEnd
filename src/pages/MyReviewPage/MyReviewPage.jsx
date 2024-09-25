@@ -53,7 +53,6 @@ function MyReviewPage({ isLoggedin, memberId, profileData, profileImageUrl }) {
   }, [myReviewList]);
 
   useEffect(() => {
-    console.log(myReviewList);
     const checkImages = async () => {
       if (!Array.isArray(myReviewList)) {
         return;
@@ -76,6 +75,7 @@ function MyReviewPage({ isLoggedin, memberId, profileData, profileImageUrl }) {
         })
       );
       dispatch(setMyReviewList(updatedReviewData)); // Redux 액션 디스패치
+      console.log(myReviewList);
       setIsImagesChecked(true); // 이미지 상태 확인 완료
     };
 

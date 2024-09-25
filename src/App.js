@@ -209,20 +209,23 @@ function App() {
     // 카테고리 데이터 Fetching 이 , 너무 많이 서버에 요청하고 있어서, 로컬스토리지를 통한 캐싱을 추가하였습니다 [24.07.07]
     let isCategoryDataFetched = localStorage.getItem("Categoryfetched");
 
-    if (isCategoryDataFetched === null) {
-      localStorage.setItem("Categoryfetched", "false");
-      isCategoryDataFetched = "false";
-    }
-
-    if (isCategoryDataFetched === "true") {
+    const fetchDataAndSetInterval = async () => {
+      await fetchCategoryData();
+      localStorage.setItem("Categoryfetched", "true");
       // 1시간(3600000ms) 간격으로 데이터 갱신
       const intervalId = setInterval(fetchCategoryData, 3600000);
+      // 컴포넌트가 언마운트될 때 인터벌 정리
+      return () => clearInterval(intervalId);
+    };
 
+    if (isCategoryDataFetched === null || isCategoryDataFetched === "false") {
+      fetchDataAndSetInterval();
+    } else {
+      // 1시간(3600000ms) 간격으로 데이터 갱신
+      const intervalId = setInterval(fetchCategoryData, 3600000);
       // 컴포넌트가 언마운트될 때 인터벌 정리
       return () => clearInterval(intervalId);
     }
-    // 최초 데이터 로드
-    fetchCategoryData();
   }, []);
 
   const processedCategoryData = categoryData.map((parentCategory) => {

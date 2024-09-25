@@ -78,6 +78,28 @@ const PaymentHistoryListBySellerSlice = createSlice({
   },
 });
 
+// Create the ProductList slice
+const productListSlice = createSlice({
+  name: "productList",
+  initialState: [], // Initial state is an empty array
+  reducers: {
+    setProductList: (state, action) => {
+      return action.payload; // Replace the current state with the new payload
+    },
+  },
+});
+
+// Create the InventoryList slice
+const inventoryListSlice = createSlice({
+  name: "inventoryList",
+  initialState: [], // Initial state is an empty array
+  reducers: {
+    setInventoryList: (state, action) => {
+      return action.payload; // Replace the current state with the new payload
+    },
+  },
+});
+
 // 주소 목록 상태를 설정하는 액션 생성자
 export const { setAddressList } = addressListSlice.actions;
 // 사용자의 리뷰 목록 상태를 설정하는 액션 생성자
@@ -94,6 +116,10 @@ export const { setPaymentHistoryListByAdmin } =
 // 회원 목록 상태를 설정하는 액션 생성자
 export const { setPaymentHistoryListBySeller } =
   PaymentHistoryListBySellerSlice.actions;
+// 상품 목록 상태를 설정하는 액션 생성자
+export const { setProductList } = productListSlice.actions;
+// 재고 목록 상태를 설정하는 액션 생성자
+export const { setInventoryList } = inventoryListSlice.actions;
 
 // Configure the Redux store
 const store = configureStore({
@@ -104,8 +130,10 @@ const store = configureStore({
     myReviewList: myReviewListSlice.reducer, // Include the myReviewList slice reducer
     addressList: addressListSlice.reducer, // Include the addressList slice reducer
     memberList: memberListSlice.reducer, // Include the memberList slice reducer
-    PaymentHistoryListByAdmin: PaymentHistoryListByAdminSlice.reducer, // Include the memberList slice reducer
-    PaymentHistoryListBySeller: PaymentHistoryListBySellerSlice.reducer, // Include the memberList slice reducer
+    PaymentHistoryListByAdmin: PaymentHistoryListByAdminSlice.reducer, // Include the PaymentHistoryListByAdmin slice reducer
+    PaymentHistoryListBySeller: PaymentHistoryListBySellerSlice.reducer, // Include the PaymentHistoryListBySeller slice reducer
+    productList: productListSlice.reducer, // Include the ProductList slice reducer
+    inventoryList: inventoryListSlice.reducer, // Include the InventoryList slice reducer
   },
 });
 

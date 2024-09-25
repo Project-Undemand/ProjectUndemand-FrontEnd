@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchPaymentHistoryListByAdmin,
   fetchPaymentHistoryListBySeller,
-} from "../MemberAdminApiUtil";
+} from "../MemberApiUtil";
 import "./MemberManagementPage.css";
 import { groupByOrderId } from "../../../MyPage/MyPageApiUtils";
 
@@ -95,6 +95,20 @@ function PaymentManagementPage({ profileData }) {
     }
   }
 
+  // 상태 변환 함수
+  const getStatusText = (statusType) => {
+    switch (statusType) {
+      case "COMPLETE_PAYMENT":
+        return "완료";
+      case "CANCELED":
+        return "취소";
+      case "REFUND":
+        return "환불";
+      default:
+        return statusType;
+    }
+  };
+
   return (
     <div className="content-middle">
       <div className="admin-contents-container">
@@ -112,13 +126,14 @@ function PaymentManagementPage({ profileData }) {
                 <col style={{ width: "33px" }} />
                 <col style={{ width: "80px" }} />
                 <col style={{ width: "40px" }} />
-                <col style={{ width: "120px" }} />
-                <col style={{ width: "120px" }} />
-                <col style={{ width: "120px" }} />
-                <col style={{ width: "120px" }} />
-                <col style={{ width: "120px" }} />
-                <col style={{ width: "120px" }} />
-                <col style={{ width: "120px" }} />
+                <col style={{ width: "70px" }} />
+                <col style={{ width: "70px" }} />
+                <col style={{ width: "80px" }} />
+                <col style={{ width: "80px" }} />
+                <col style={{ width: "60px" }} />
+                <col style={{ width: "60px" }} />
+                <col style={{ width: "130px" }} />
+                <col style={{ width: "auto" }} />
               </colgroup>
               <thead className="address-list-header">
                 <tr>
@@ -158,7 +173,7 @@ function PaymentManagementPage({ profileData }) {
                       <span>{payment.ordererName}</span>
                     </td>
                     <td>
-                      <span>{payment.statusType}</span>
+                      <span>{getStatusText(payment.statusType)}</span>
                     </td>
                     <td>
                       <span>{payment.payMethod}</span>

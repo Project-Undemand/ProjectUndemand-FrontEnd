@@ -87,13 +87,13 @@
 }
 
 .delete-button {
-  background-color: #fe2b2b;
+  background-color: #878787;
   color: rgb(255, 255, 255);
 }
 
 .delete-button:hover {
   background-color: rgb(242, 242, 242);
-  color: #fe2b2b;
+  color: #878787;
 }
 
 .register-button {

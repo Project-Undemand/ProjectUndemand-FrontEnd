@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMemberLists } from "../MemberAdminApiUtil";
+import { fetchMemberLists } from "../MemberApiUtil";
 import "./MemberManagementPage.css";
 
 function MemberManagementPage({ profileData }) {
@@ -107,9 +107,11 @@ function MemberManagementPage({ profileData }) {
                 <col style={{ width: "40px" }} />
                 <col style={{ width: "80px" }} />
                 <col style={{ width: "auto" }} />
-                <col style={{ width: "200px" }} />
-                <col style={{ width: "120px" }} />
-                <col style={{ width: "120px" }} />
+                <col style={{ width: "100px" }} />
+                <col style={{ width: "100px" }} />
+                <col style={{ width: "170px" }} />
+                <col style={{ width: "100px" }} />
+                <col style={{ width: "100px" }} />
               </colgroup>
               <thead className="address-list-header">
                 <tr>
@@ -131,9 +133,11 @@ function MemberManagementPage({ profileData }) {
                     </select>
                   </th>
                   <th scope="col">email</th>
+                  <th scope="col">이름</th>
+                  <th scope="col">닉네임</th>
                   <th scope="col">제조업체</th>
-                  <th scope="col">생성일</th>
-                  <th scope="col">최근로그인</th>
+                  <th scope="col">가입일</th>
+                  <th scope="col">최근접속</th>
                 </tr>
               </thead>
               <tbody className="members-body">
@@ -154,6 +158,12 @@ function MemberManagementPage({ profileData }) {
                     </td>
                     <td>
                       <span>{member.email}</span>
+                    </td>
+                    <td>
+                      <span>{member.username || "-"}</span>
+                    </td>
+                    <td>
+                      <span>{member.nickname || "-"}</span>
                     </td>
                     <td>
                       <span>{member.manufacturer || "-"}</span>
@@ -187,8 +197,11 @@ function MemberManagementPage({ profileData }) {
               ))}
             </div>
             <div className="address-actions">
-              <button className="register-button">판매자 등록</button>
-              <button className="delete-button">비활성화</button>
+              <button className="register-button">판매자 활성화</button>
+              <button className="delete-button">판매자 비활성화</button>
+              <button className="register-button">회원 활성화</button>
+              <button className="delete-button">회원 비활성화</button>
+              <button className="register-button">판매자 회원가입</button>
             </div>
           </div>
         </div>
