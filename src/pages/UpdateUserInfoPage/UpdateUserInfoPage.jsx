@@ -71,6 +71,10 @@ const UpdateUserInfoPage = ({
 
       await axios.put(url, newValue, { headers, withCredentials: true });
       dispatch(fetchProfile(memberId));
+
+      // 수정 완료 후 편집 모드를 false로 전환
+      setIsEditing((prev) => ({ ...prev, [field]: false }));
+
       console.log(`${field} update success`);
     } catch (error) {
       console.error(`Error updating ${field}:`, error);
@@ -89,7 +93,11 @@ const UpdateUserInfoPage = ({
       const data = { value: newValue }; // 서버에서 기대하는 데이터 형식에 맞게 조정
 
       await axios.put(url, newValue, { headers, withCredentials: true });
-      dispatch(fetchProfile(memberId));
+      dispatch(fetchProfile(memberId)); // 프로필 데이터 업데이트
+
+      // 수정 완료 후 편집 모드를 false로 전환
+      setIsEditing((prev) => ({ ...prev, [field]: false }));
+
       console.log(`${field} update success`);
     } catch (error) {
       console.error(`Error updating ${field}:`, error);
@@ -115,7 +123,6 @@ const UpdateUserInfoPage = ({
   const nickname = profileData?.member?.nickname || "nickname";
   const memberAges = profileData?.memberAges || "Ages";
   const memberGender = profileData?.memberGender || "Gender";
-  console.log(profileData);
 
   return (
     <div className="profile-update-container">
@@ -278,7 +285,7 @@ const UpdateUserInfoPage = ({
                 ref={refs.gender}
               />
             </div> */}
-            <div className="user-form-group top-border" key="gender">
+            <div className="user-form-group top-border" key="userAge">
               <div className="user-info-form">
                 <label>
                   연령대
@@ -318,7 +325,7 @@ const UpdateUserInfoPage = ({
                 )}
               </div>
             </div>
-            <div className="user-form-group top-border" key="gender">
+            <div className="user-form-group top-border" key="userGender">
               <div className="user-info-form">
                 <label>
                   성별
@@ -330,9 +337,9 @@ const UpdateUserInfoPage = ({
                     defaultValue={memberGender}
                     ref={refs["gender"]}
                   >
-                    <option value="male">남성</option>
-                    <option value="female">여성</option>
-                    <option value="other">기타</option>
+                    <option value="MAN">남성</option>
+                    <option value="WOMAN">여성</option>
+                    <option value="ETC">기타</option>
                   </select>
                 ) : (
                   <span>{memberGender}</span>
