@@ -214,7 +214,7 @@ const UpdateUserInfoPage = ({
               </div>
             </div>
             {/* 회원의 자기소개 컨테이너 */}
-            <div className="user-intro-container">
+            <div className="user-intro-container top-border">
               <div className="user-info-form">
                 <div className="user-intro-title">
                   <label>
