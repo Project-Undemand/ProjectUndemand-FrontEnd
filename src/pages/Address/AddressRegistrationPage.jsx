@@ -155,155 +155,157 @@ function AddressRegistrationPage({ isLoggedin, memberId }) {
         </div>
         <p>자주 쓰는 배송지를 등록 관리하실 수 있습니다.</p>
       </div>
+      <div className="address-registration-container">
+        <form
+          onSubmit={handleNewAddressSubmit}
+          className="address-registration-form"
+        >
+          <div className="form-group top-border input-height-default">
+            <label>
+              배송지명 <span className="required">*</span>
+            </label>
+            <input
+              type="text"
+              name="addressName"
+              value={addressData.addressName}
+              onChange={handleChange}
+              required
+              className="addressName-input"
+            />
+          </div>
+          <div className="form-group input-height-default">
+            <label>
+              성명 <span className="required">*</span>
+            </label>
+            <input
+              type="text"
+              name="recipient"
+              value={addressData.recipient}
+              onChange={handleChange}
+              required
+              className="recipient-input"
+            />
+          </div>
+          <div className="form-group address-form">
+            <label style={{ padding: "20px" }}>
+              주소 <span className="required">*</span>
+            </label>
+            <div className="address-input-container">
+              <div className="zipcode-input-box input-height-default">
+                <input
+                  type="text"
+                  name="zipCode"
+                  value={addressData.postCode}
+                  onChange={handleChange}
+                  readOnly
+                  placeholder="우편번호"
+                  className="zipcode-input"
+                />
+                <button type="button" onClick={toggleHandler}>
+                  주소 찾기
+                </button>
+              </div>
 
-      <form
-        onSubmit={handleNewAddressSubmit}
-        className="address-registration-form"
-      >
-        <div className="form-group top-border input-height-default">
-          <label>
-            배송지명 <span className="required">*</span>
-          </label>
-          <input
-            type="text"
-            name="addressName"
-            value={addressData.addressName}
-            onChange={handleChange}
-            required
-            className="addressName-input"
-          />
-        </div>
-        <div className="form-group input-height-default">
-          <label>
-            성명 <span className="required">*</span>
-          </label>
-          <input
-            type="text"
-            name="recipient"
-            value={addressData.recipient}
-            onChange={handleChange}
-            required
-            className="recipient-input"
-          />
-        </div>
-        <div className="form-group address-form">
-          <label style={{ padding: "20px" }}>
-            주소 <span className="required">*</span>
-          </label>
-          <div className="address-input-container">
-            <div className="zipcode-input-box input-height-default">
-              <input
-                type="text"
-                name="zipCode"
-                value={addressData.postCode}
-                onChange={handleChange}
-                readOnly
-                placeholder="우편번호"
-                className="zipcode-input"
-              />
-              <button type="button" onClick={toggleHandler}>
-                주소 찾기
-              </button>
-            </div>
+              {isOpen && (
+                <div className="postcode-modal-overlay">
+                  <div className="postcode-modal-content">
+                    <div className="postcode-modal-body">
+                      <div className="close-button">
+                        <button onClick={() => setIsOpen(false)}>
+                          <img
+                            src="https://w7.pngwing.com/pngs/336/356/png-transparent-close-remove-delete-x-cross-reject-basic-user-interface-icon.png"
+                            alt="Close"
+                            s
+                          />
+                        </button>
+                      </div>
 
-            {isOpen && (
-              <div className="postcode-modal-overlay">
-                <div className="postcode-modal-content">
-                  <div className="postcode-modal-body">
-                    <div className="close-button">
-                      <button onClick={() => setIsOpen(false)}>
-                        <img
-                          src="https://w7.pngwing.com/pngs/336/356/png-transparent-close-remove-delete-x-cross-reject-basic-user-interface-icon.png"
-                          alt="Close"
-                          s
-                        />
-                      </button>
+                      <DaumPostcode
+                        theme={themeObj}
+                        style={postCodeStyle}
+                        onComplete={completeHandler}
+                        onClose={closeHandler}
+                      />
                     </div>
-
-                    <DaumPostcode
-                      theme={themeObj}
-                      style={postCodeStyle}
-                      onComplete={completeHandler}
-                      onClose={closeHandler}
-                    />
                   </div>
                 </div>
-              </div>
-            )}
-            <input
-              type="text"
-              name="address"
-              value={addressData.address}
-              onChange={handleChange}
-              readOnly
-              placeholder="기본주소"
-              className="address-input"
-            />
-            <input
-              type="text"
-              name="detailAddress"
-              value={addressData.detailAddress}
-              onChange={handleChange}
-              placeholder="나머지주소"
-              className="address-detail-input input-height-default"
-            />
+              )}
+              <input
+                type="text"
+                name="address"
+                value={addressData.address}
+                onChange={handleChange}
+                readOnly
+                placeholder="기본주소"
+                className="address-input"
+              />
+              <input
+                type="text"
+                name="detailAddress"
+                value={addressData.detailAddress}
+                onChange={handleChange}
+                placeholder="나머지주소"
+                className="address-detail-input input-height-default"
+              />
+            </div>
           </div>
-        </div>
-        <div className="form-group input-height-default">
-          <label>
-            휴대전화 <span className="required">*</span>
-          </label>
-          <div className="phone-input">
-            <select
-              name="phoneNumberPrefix"
-              value={addressData.phoneNumberPrefix}
-              onChange={handleChange}
-            >
-              <option value=""></option>
-              <option value="010">010</option>
-              <option value="011">011</option>
-              <option value="016">016</option>
-              <option value="017">017</option>
-              <option value="018">018</option>
-              <option value="019">019</option>
-            </select>
-            -
-            <input
-              type="text"
-              name="phoneNumberPart1"
-              value={addressData.phoneNumberPart1}
-              maxLength="4"
-              onChange={handleChange}
-              className="phone-number-input input-height-default"
-            />
-            -
-            <input
-              type="text"
-              name="phoneNumberPart2"
-              value={addressData.phoneNumberPart2}
-              maxLength="4"
-              onChange={handleChange}
-              className="phone-number-input input-height-default"
-            />
+          <div className="form-group input-height-default">
+            <label>
+              휴대전화 <span className="required">*</span>
+            </label>
+            <div className="phone-input">
+              <select
+                name="phoneNumberPrefix"
+                value={addressData.phoneNumberPrefix}
+                onChange={handleChange}
+              >
+                <option value=""></option>
+                <option value="010">010</option>
+                <option value="011">011</option>
+                <option value="016">016</option>
+                <option value="017">017</option>
+                <option value="018">018</option>
+                <option value="019">019</option>
+              </select>
+              -
+              <input
+                type="text"
+                name="phoneNumberPart1"
+                value={addressData.phoneNumberPart1}
+                maxLength="4"
+                onChange={handleChange}
+                className="phone-number-input input-height-default"
+              />
+              -
+              <input
+                type="text"
+                name="phoneNumberPart2"
+                value={addressData.phoneNumberPart2}
+                maxLength="4"
+                onChange={handleChange}
+                className="phone-number-input input-height-default"
+              />
+            </div>
           </div>
-        </div>
-        <div className="checkbox-group">
-          <input
-            type="checkbox"
-            id="isDefaultAddress"
-            name="isDefaultAddress"
-            checked={defaultAddressState} // useState로 상태 관리
-            onChange={handleCheckboxChange} // 상태 변경
-          />
-          <label htmlFor="isDefaultAddress">기본 배송지로 저장</label>
-        </div>
-        <div className="form-actions">
-          <button type="submit" onClick={handleNewAddressSubmit}>
-            배송지 등록
-          </button>
-          <Link to="/user/mypage/address">취소</Link>
-        </div>
-      </form>
+          <div className="checkbox-group">
+            <input
+              type="checkbox"
+              id="isDefaultAddress"
+              name="isDefaultAddress"
+              checked={defaultAddressState} // useState로 상태 관리
+              onChange={handleCheckboxChange} // 상태 변경
+            />
+            <label htmlFor="isDefaultAddress">기본 배송지로 저장</label>
+          </div>
+          <div className="form-actions">
+            <button type="submit" onClick={handleNewAddressSubmit}>
+              배송지 등록
+            </button>
+            <Link to="/user/mypage/address">취소</Link>
+          </div>
+        </form>
+      </div>
+
       <div className="ec-base-help">
         <h3>배송주소록 유의사항</h3>
         <div className="inner">
